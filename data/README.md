@@ -184,7 +184,7 @@ The codebook for your data file(s) using the following format.
 
 The original dataset is stored in `data` and the cleaned up data is stored in `tidy_data`
 
-# information about `data`
+# glimpse of `data`
 ```
 Rows: 2,441
 Columns: 66
@@ -256,7 +256,7 @@ $ X                     <int> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA
 $ X.1                   <int> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
 ```
 
-# information about `tidy_data`
+# glimpse of `tidy_data`
 
 ```
 Rows: 2,441
@@ -294,3 +294,31 @@ $ covidtest           <int> 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2
 $ educ                <int> 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,…
 $ hhincome            <int> 12, 11, 11, 5, 3, 7, 3, 6, 12, 12, 12, 12, 12, 12, 8, 12, 11, 11, 12, 12, 12, 12, 11, 11, 9, 12, 4, 11, 12, 11, 12, 11, 12, 9, 8, 12, 12, 12, 5, 12, 12, 11, 11, 12, 6, 11, 11, 12, 12, 11, 11,…
 ```
+
+# summary of `tidy_data`
+```
+Participant_ID      age            usres       state            race           sex           localsip       localsip2       localsip3     leavehomeact___1 leavehomeact___2 leavehomeact___3 leavehomeact___4
+ Min.   :   1   Min.   :18.00   Min.   :1   Min.   : 1.00   Min.   :0.00   Min.   :1.000   Min.   :1.000   Min.   :1.000   Min.   :1.000   Min.   :0.0000   Min.   :0.0000   Min.   :0.000    Min.   :0.0000  
+ 1st Qu.: 673   1st Qu.:32.00   1st Qu.:1   1st Qu.:37.00   1st Qu.:4.00   1st Qu.:1.000   1st Qu.:1.000   1st Qu.:1.000   1st Qu.:1.000   1st Qu.:1.0000   1st Qu.:0.0000   1st Qu.:0.000    1st Qu.:0.0000  
+ Median :1371   Median :40.00   Median :1   Median :44.00   Median :4.00   Median :2.000   Median :1.000   Median :1.000   Median :1.000   Median :1.0000   Median :1.0000   Median :0.000    Median :1.0000  
+ Mean   :1377   Mean   :41.91   Mean   :1   Mean   :36.97   Mean   :3.87   Mean   :1.674   Mean   :1.117   Mean   :1.063   Mean   :1.042   Mean   :0.7841   Mean   :0.5449   Mean   :0.186    Mean   :0.6436  
+ 3rd Qu.:2082   3rd Qu.:51.00   3rd Qu.:1   3rd Qu.:44.00   3rd Qu.:4.00   3rd Qu.:2.000   3rd Qu.:1.000   3rd Qu.:1.000   3rd Qu.:1.000   3rd Qu.:1.0000   3rd Qu.:1.0000   3rd Qu.:0.000    3rd Qu.:1.0000  
+ Max.   :2789   Max.   :86.00   Max.   :1   Max.   :51.00   Max.   :6.00   Max.   :2.000   Max.   :7.000   Max.   :2.000   Max.   :2.000   Max.   :1.0000   Max.   :1.0000   Max.   :1.000    Max.   :1.0000  
+                                            NA's   :266     NA's   :265    NA's   :248     NA's   :478     NA's   :2362    NA's   :2417                                                                       
+ leavehomeact___5 leavehomeact___6 leavehomeact___7 leavehomereason___1 leavehomereason___2 leavehomereason___3 leavehomereason___4 leavehomereason___5 leavehomereason___6 leavehomereason___7 localsiphours   
+ Min.   :0.0000   Min.   :0.0000   Min.   :0.0000   Min.   :0.0000      Min.   :0.00000     Min.   :0.0000      Min.   :0.0000      Min.   :0.0000      Min.   :0.0000      Min.   :0.0000      Min.   :  0.00  
+ 1st Qu.:0.0000   1st Qu.:0.0000   1st Qu.:0.0000   1st Qu.:0.0000      1st Qu.:0.00000     1st Qu.:0.0000      1st Qu.:0.0000      1st Qu.:0.0000      1st Qu.:0.0000      1st Qu.:0.0000      1st Qu.: 21.00  
+ Median :0.0000   Median :1.0000   Median :0.0000   Median :0.0000      Median :0.00000     Median :1.0000      Median :0.0000      Median :1.0000      Median :0.0000      Median :0.0000      Median : 23.00  
+ Mean   :0.4441   Mean   :0.7395   Mean   :0.1266   Mean   :0.2962      Mean   :0.08808     Mean   :0.6731      Mean   :0.3322      Mean   :0.5268      Mean   :0.3437      Mean   :0.1053      Mean   : 21.19  
+ 3rd Qu.:1.0000   3rd Qu.:1.0000   3rd Qu.:0.0000   3rd Qu.:1.0000      3rd Qu.:0.00000     3rd Qu.:1.0000      3rd Qu.:1.0000      3rd Qu.:1.0000      3rd Qu.:1.0000      3rd Qu.:0.0000      3rd Qu.: 23.00  
+ Max.   :1.0000   Max.   :1.0000   Max.   :1.0000   Max.   :1.0000      Max.   :1.00000     Max.   :1.0000      Max.   :1.0000      Max.   :1.0000      Max.   :1.0000      Max.   :1.0000      Max.   :528.00  
+                                                    NA's   :608                                                                                                                                 NA's   :563     
+   covidsick      hhcovidsick     ffcovidsick     Classification   covidtest          educ          hhincome     
+ Min.   :1.000   Min.   :1.000   Min.   :1.000   Rural   :539    Min.   :1.000   Min.   :3.000   Min.   : 1.000  
+ 1st Qu.:2.000   1st Qu.:2.000   1st Qu.:2.000   Suburban:694    1st Qu.:2.000   1st Qu.:6.000   1st Qu.: 8.000  
+ Median :2.000   Median :2.000   Median :2.000   Urban   :895    Median :2.000   Median :6.000   Median :11.000  
+ Mean   :2.113   Mean   :2.065   Mean   :2.221   NA's    :313    Mean   :1.982   Mean   :5.812   Mean   : 9.848  
+ 3rd Qu.:2.000   3rd Qu.:2.000   3rd Qu.:2.000                   3rd Qu.:2.000   3rd Qu.:6.000   3rd Qu.:12.000  
+ Max.   :3.000   Max.   :3.000   Max.   :4.000                   Max.   :2.000   Max.   :7.000   Max.   :12.000  
+ NA's   :244     NA's   :247     NA's   :247                     NA's   :250     NA's   :246     NA's   :281     
+ ```
