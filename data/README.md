@@ -9,8 +9,177 @@ The codebook for your data file(s) using the following format.
 ## data origin
 [Replication Data for: Associations of Urbanicity and Sociodemographic Characteristics with Protective Health Behaviors and Reasons for Leaving the Home during COVID-19](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/7FA07D)
 
-
-
+## codebook
+1. participant_id: Participant ID
+2. age: age in years
+3. usres: Do you currently live in the United States?
+4. state: What state do you live in? (numbers associated with each state)
+```
+   1 - Alabama
+   2 - Alaska  
+   3 - Arizona  
+   4 - Arkansas  
+   5 - California  
+   6 - Colorado
+   7 - Connecticut
+   8 - District of Columbia (DC)
+   9 - Delaware
+   10 - Florida
+   11 - Georgia
+   12 - Hawaii
+   13 - Idaho
+   14 - Illinois
+   15 - Inidana
+   16 - Iowa
+   17 - Kansas
+   18 - Kentucky
+   19 - Louisiana
+   20 - Maine
+   21 - Maryland
+   22 - Massachusetts
+   23 - Michigan
+   24 - Minnesota
+   25 - Mississippi
+   26 - Missouri
+   27 - Montana
+   28 - Nebraska
+   29 - Nevada
+   30 - New Hampshire
+   31 - New Jersey
+   32 - New Mexico
+   33 - New York
+   34 - North Carolina
+   35 - North Dakota
+   36 - Ohio
+   37 - Oklahoma
+   38 - Oregon
+   39 - Pennsylvania
+   40 - Rhode Island
+   41 - South Carolina
+   42 - South Dakota
+   43 - Tennessee
+   44 - Texas
+   45 - Utah
+   46 - Vermont
+   47 - Virginia
+   48 - Washington
+   49 - West Virginia
+   50 - Wisonsin
+   51 - Wyoming
+```
+5. race - What is your race?
+```
+  0 - American Indian/Alaska Native
+  1 - Asian
+  2 - Native Hawaiian or Other Pacific Islander
+  3 - Black or African American
+  4 - White
+  5 - More than one race
+  6 - Unknown/not reported
+```
+6. sex - What was your sex at birth?
+```
+  1 - Male
+  2 - Female
+```
+7. localsip - Are you currently required by state or local (county, city) laws to "stay at home"?
+```
+  1 - Yes
+  2 - No
+  7 - Don't know/Not sure
+```
+8. localsip2 (if `localsip == 2`) - Even though there is no formal order to "stay at home," are you staying at home as much as possible?
+```
+  1 - Yes
+  2 - No
+```
+9. localsip3 (if `localsip == 7`) - Even though there is no formal order to "stay at home," are you staying at home as much as possible?
+```
+  1 - Yes
+  2 - No
+```
+10. leavehomeact - If you leave your home for any reason, what do you do to protect yourself when out in public? (check all that apply)
+```
+  1 - yes (box was checked)
+  0 - no (box was not checked)
+  
+  leavehomeact_1 - social distancing (staying at least 6 feet away from others)
+  leavehomeact_2 - wearing a protective mask
+  leavehomeact_3 - wearing gloves
+  leavehomeact_4 - using hand sanitizer
+  leavehomeact_5 - using disinfectant wipes
+  leavehomeact_6 - washing hands frequently
+  leavehomeact_7 - removing clothes before re-entering home
+  leavehomeact_8 - other
+```
+11. leavehomereason - For what reasons have you left your home during the "stay in place" order? (check all that apply)
+```
+  1 - yes (box was checked)
+  0 - no (box was not checked)
+  
+  leavehomereason_1 - work 
+  leavehomereason_2 - provide care for someone else
+  leavehomereason_3 - grocery shopping
+  leavehomereason_4 - other essential shopping
+  leavehomereason_5 - exercise
+  leavehomereason_6 - walking dog
+  leavehomereason_7 - other
+```
+12. localsiphours - On average, how many hours per day (out of 24-hours) have you remained at home during COVID outbreak? (integer, min: 0, max: 24)
+13. covidsick - Do you think you have been sick from COVID?
+```
+  1 - Yes
+  2 - No
+  3 - Maybe (had symptoms)
+```
+14. hhcovidsick - Do you think anyone in your household been sick from COVID?
+```
+  1 - Yes
+  2 - No
+  3 - Maybe (had symptoms)
+```
+15. ffcovidsick - Do you think any of your close friends or family members outside of your household been sick from COVID?
+```
+  1 - Yes
+  2 - No
+  3 - Maybe (had symptoms)
+```
+16. Classification
+```
+  Urban
+  Suburban
+  Rural
+```
+17. covidtest - Have you been tested for COVID?
+```
+  1 - Yes
+  2 - No
+```
+18. educ - What is the highest grade or year of school you completed?
+```
+  1 - Never attended school or only kindergarten
+  2 - grades 1 through 8 (elementary)
+  3 - grades 9 through 11 (some high shcool)
+  4 - grade 12 or GED (high school graduate)
+  5 - some college or technical school
+  6 - college 4 years or more (college graduate)
+  7 - don't know/not sure
+```
+19. hhincome - annual income from all sources
+```
+  1 - less than $9,999
+  2 - $10,000 to $19,999
+  3 - $20,000 to $29,999
+  4 - $30,000 to $39,999
+  5 - $40,000 to $49,999
+  6 - $50,000 to $59,999
+  7 - $60,000 to $69,999
+  8 - $70,000 to $79,999
+  9 - $80,000 to $89,999
+  10 - $90,000 to $99,999
+  11 - $100,000 to $150,000
+  12 - over $150,000
+```
 ## data
 
 Rows: 2,441
