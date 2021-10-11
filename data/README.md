@@ -6,6 +6,11 @@ Then, include metadata about your dataset including information on provenance, c
 
 The codebook for your data file(s) using the following format.
 
+## data origin
+[Replication Data for: Associations of Urbanicity and Sociodemographic Characteristics with Protective Health Behaviors and Reasons for Leaving the Home during COVID-19](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/7FA07D)
+
+
+
 ## data
 
 Rows: 2,441
