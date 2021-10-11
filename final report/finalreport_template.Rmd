@@ -20,5 +20,5 @@ library(ggspatial) #for scale annotation
 data <- read.csv(file = '../data/COVID_raw_12.8.csv')
 glimpse(data)
 summary(data)
-
+new_codebook_rmd()
 ```
