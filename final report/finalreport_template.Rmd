@@ -4,4 +4,21 @@ subtitle: "due November 16, 2021 by 11:59 PM "
 author: "Your names and team name here"
 date: ""
 output: pdf_document
+
 ---
+
+```{r libraries}
+library(dplyr)
+library(tidyverse)
+library(sf)
+library(viridis)
+library(ggspatial) #for scale annotation
+```
+
+
+```{r read_in_data}
+data <- read.csv(file = '../data/COVID_raw_12.8.csv')
+glimpse(data)
+summary(data)
+
+```
