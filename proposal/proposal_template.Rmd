@@ -8,7 +8,7 @@ output: pdf_document
 
 # Load Packages
 
-```{r load-packages, message = FALSE, warning = FALSE}
+```{r load-packages, echo = FALSE, message = FALSE, warning = FALSE}
 library(dplyr)
 library(tidyverse)
 library(sf)
@@ -20,31 +20,41 @@ library(ggspatial) #for scale annotation
 ```{r load-data, message = F}
 data <- read.csv(file = '../data/COVID_raw_12.8.csv')
 tidy_data <- select(data, c('Participant_ID', 'age',"usres", "state", "race", "sex", "localsip", "localsip2", "localsip3", "leavehomeact___1", "leavehomeact___2", "leavehomeact___3", "leavehomeact___4", "leavehomeact___5", "leavehomeact___6", "leavehomeact___7", "leavehomereason___1", "leavehomereason___2", "leavehomereason___3", "leavehomereason___4", "leavehomereason___5", "leavehomereason___6", "leavehomereason___7", "localsiphours", "covidsick", "hhcovidsick", "ffcovidsick", "Classification", "covidtest", "educ", "hhincome"))
-tidy_data$race[is.na(tidy_data$race) == TRUE] <- "6"
-number_of_hours <- tidy_data %>%
-  group_by(race) %>%
- # summarize(localsiphours) %>%
-  summarise_at(vars(localsiphours), list(hours = mean),na.rm = TRUE) %>% #to summarize count
-  print()
 
 ```
 
 # Introduction and Data, including Research Questions
 
-(The introduction should introduce your general research question and your data (where it came from, how it was collected, what are the cases, what are the variables, etc.). Your research questions should be clearly specified. The motivation for your research question should be clear, with citations to relevant literature as appropriate.)
+In response to the COVID-19 pandemic, 42 states and territories issued mandatory stay-at-home orders between March 1 to May 31, 2020, affecting 2,355 out of 3,233 (73%) U.S. counties (Moreland et al., 2020). These stay-at-home orders and social distancing policies reduced both population movement as well as person-to-person contact, which slowed the spread of COVID-19 and prevented an even more significant loss of life. In a study published by Cambridge University Press in May 2020, the total number of infections was projected to reach 287 million in the absence of stay-at-home and social distancing policies and 188 million with the enforcement of these policies, translating to 1.24 million lives saved (Thunström et al., 2020).  
+ 
+Due to the importance of stay-at-home orders in slowing the spread of COVID in the United States, we want to examine the extent to which different populations obeyed stay-at-home orders or stayed home even in the absence of shelter-in-place policies. To do so, we used the dataset, “Associations of Urbanicity and Sociodemographic Characteristics with Protective Health Behaviors and Reasons for Leaving the Home during COVID-19,” found on the Harvard Dataverse. The data was collected through a 15-minute online questionnaire of U.S. adults (N = 2,441). Participants were recruited through social media platforms such as Twitter, Instagram, and Facebook. The dataset had 66 variables corresponding to the questions on the online questionnaire, and we chose to focus on the survey responses pertaining to (1) age, (2) country of residence, (3) state of residence, (4) race, (5) sex, (6) if local stay-at-home orders existed, (7) if the participant stayed home as much as possible even if no stay-at-home order existed, (8) if the participant stayed home as much as possible even if they didn’t know if a stay-at-home order existed, (9) if/how the participant protected themselves when leaving home, (10) reasons for leaving home during the stay-at-home order, (11) average hours per day spent at home during pandemic, (12) if the participant had ever contracted COVID, (13) if anyone in the participant’s household had ever contracted COVID, (14) if any close friends had contracted COVID, (15) if the participant lived in an urban, suburban, or rural area, (16) whether the participant had been tested for COVID, (17) educational attainment, and (18) annual income. Each participant/observation was identified by a unique participant ID. 
+
+References: 
+Centers for Disease Control and Prevention. (2020, September 3). Timing of state and territorial COVID-19 stay-at-home orders and changes in population movement - United States, March 1–May 31, 2020. Centers for Disease Control and Prevention. 
+
+Thunström, L., Newbold, S. C., Finnoff, D., Ashworth, M., &amp; Shogren, J. F. (2020, May 21). The benefits and costs of using social distancing to flatten the curve for covid-19: Journal of Benefit-Cost Analysis. Cambridge Core. 
 
 # Glimpse
 
 ```{r glimpse}
 glimpse(tidy_data)
-summary(tidy_data)
 ```
 
 # Data Analysis Plan
 
 (Specify the outcome (response, Y) and predictor (explanatory, X) variables you will use to answer your question, as well as the comparison groups you will use, if applicable. You may include very preliminary exploratory data analysis, including some summary statistics and visualizations, along with some explanation on how they help you learn more about your data. Note the statistical method(s) that you believe will be useful in answering your question(s). 
 What results from these specific statistical methods are needed to support your hypothesized answer?)
-```{r data analysis}
+
+```{r summmarize-hours-by-living-type}
+number_of_hours <- tidy_data %>%
+  group_by(Classification) %>%
+ # summarize(localsiphours) %>%
+  summarise_at(vars(localsiphours), list(hours = mean),na.rm = TRUE) %>% #to summarize count
+  print()
+```
+
+```{r data-analysis, fig.width = 7, fig.height= 3}
+tidy_data$race[is.na(tidy_data$race) == TRUE] <- "6"
 number_of_hours$race[number_of_hours$race == 0] <- "American Indian"
 number_of_hours$race[number_of_hours$race == 1] <- "Asian"
 number_of_hours$race[number_of_hours$race == 2] <- "Native Hawaiian"
