@@ -36,7 +36,6 @@ number_of_hours <- tidy_data %>%
 # Glimpse
 
 ```{r glimpse}
-glimpse(data)
 glimpse(tidy_data)
 summary(tidy_data)
 ```
