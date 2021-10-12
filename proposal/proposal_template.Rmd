@@ -1,8 +1,8 @@
 ---
 title: "Project Proposal"
 subtitle: "due October 11, 2021 by 11:59 PM "
-author: "Your names and team name here"
-date: ""
+author: "Grace Lee and Ji Yun Hyo, TBD3"
+date: "October 11th, 2021"
 output: pdf_document
 ---
 
