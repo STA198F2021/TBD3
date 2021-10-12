@@ -1,4 +1,9 @@
 ---
+output:
+  pdf_document: default
+  html_document: default
+---
+----
 title: "Project Proposal"
 subtitle: "due October 11, 2021 by 11:59 PM "
 author: "Grace Lee and Ji Yun Hyo, TBD3"
@@ -47,15 +52,23 @@ What results from these specific statistical methods are needed to support your 
 
 ```{r summmarize-hours-by-living-type}
 number_of_hours <- tidy_data %>%
+  group_by(race) %>%
+ # summarize(localsiphours) %>%
+  summarise_at(vars(localsiphours), list(hours = mean),na.rm = TRUE) #to summarize count
+
+number_of_hours_two <- tidy_data %>%
   group_by(Classification) %>%
  # summarize(localsiphours) %>%
   summarise_at(vars(localsiphours), list(hours = mean),na.rm = TRUE) %>% #to summarize count
   print()
+
+
 ```
 
 ```{r data-analysis, fig.width = 7, fig.height= 3}
 tidy_data$race[is.na(tidy_data$race) == TRUE] <- "6"
-number_of_hours$race[number_of_hours$race == 0] <- "American Indian"
+tidy_data$Classification[is.na(tidy_data$Classification)== TRUE] <- "Urban"
+number_of_hours$Classification[number_of_hours$race == 0] <- "American Indian"
 number_of_hours$race[number_of_hours$race == 1] <- "Asian"
 number_of_hours$race[number_of_hours$race == 2] <- "Native Hawaiian"
 number_of_hours$race[number_of_hours$race == 3] <- "Black"
