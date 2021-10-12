@@ -9,11 +9,24 @@ output: pdf_document
 # Load Packages
 
 ```{r load-packages, message = FALSE, warning = FALSE}
-library(tidyverse) 
+library(dplyr)
+library(tidyverse)
+library(sf)
+library(viridis)
+library(ggspatial) #for scale annotation
 ``` 
 
 # Load Data
 ```{r load-data, message = F}
+data <- read.csv(file = '../data/COVID_raw_12.8.csv')
+tidy_data <- select(data, c('Participant_ID', 'age',"usres", "state", "race", "sex", "localsip", "localsip2", "localsip3", "leavehomeact___1", "leavehomeact___2", "leavehomeact___3", "leavehomeact___4", "leavehomeact___5", "leavehomeact___6", "leavehomeact___7", "leavehomereason___1", "leavehomereason___2", "leavehomereason___3", "leavehomereason___4", "leavehomereason___5", "leavehomereason___6", "leavehomereason___7", "localsiphours", "covidsick", "hhcovidsick", "ffcovidsick", "Classification", "covidtest", "educ", "hhincome"))
+tidy_data$race[is.na(tidy_data$race) == TRUE] <- "6"
+number_of_hours <- tidy_data %>%
+  group_by(race) %>%
+ # summarize(localsiphours) %>%
+  summarise_at(vars(localsiphours), list(hours = mean),na.rm = TRUE) %>% #to summarize count
+  print()
+
 ```
 
 # Introduction and Data, including Research Questions
@@ -22,9 +35,30 @@ library(tidyverse)
 
 # Glimpse
 
-(Please use `glimpse` for your data, uploaded into the data folder, here.)
+```{r glimpse}
+glimpse(data)
+glimpse(tidy_data)
+summary(tidy_data)
+```
 
 # Data Analysis Plan
 
 (Specify the outcome (response, Y) and predictor (explanatory, X) variables you will use to answer your question, as well as the comparison groups you will use, if applicable. You may include very preliminary exploratory data analysis, including some summary statistics and visualizations, along with some explanation on how they help you learn more about your data. Note the statistical method(s) that you believe will be useful in answering your question(s). 
 What results from these specific statistical methods are needed to support your hypothesized answer?)
+```{r data analysis}
+number_of_hours$race[number_of_hours$race == 0] <- "American Indian"
+number_of_hours$race[number_of_hours$race == 1] <- "Asian"
+number_of_hours$race[number_of_hours$race == 2] <- "Native Hawaiian"
+number_of_hours$race[number_of_hours$race == 3] <- "Black"
+number_of_hours$race[number_of_hours$race == 4] <- "White"
+number_of_hours$race[number_of_hours$race == 5] <- "Mixed"
+number_of_hours$race[number_of_hours$race == 6] <- "Unknown"
+
+ggplot(data=number_of_hours, aes(x=race, y=hours)) +
+  geom_bar(stat="identity") +
+  labs (
+    y = "Number of Hours Remained at Home",
+    x = "Race",
+    title = "Number of Hours Remained at Home by Race",
+    ) 
+```
