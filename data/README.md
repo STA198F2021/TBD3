@@ -93,7 +93,7 @@ The codebook for your data file(s) using the following format.
   1 - Yes
   2 - No
 ```
-9. localsip3 (if `localsip == 7`) - Even though there is no formal order to "stay at home," are you staying at home as much as possible?
+9. localsip3 (if `localsip == 7`) - Even though you don't know of a formal order to "stay at home," are you staying at home as much as possible?
 ```
   1 - Yes
   2 - No
