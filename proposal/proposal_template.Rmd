@@ -21,6 +21,9 @@ library(ggspatial) #for scale annotation
 ```{r load-data, message = F, warning = FALSE}
 data <- read.csv(file = '../data/COVID_raw_12.8.csv')
 tidy_data <- select(data, c('Participant_ID', 'age',"usres", "state", "race", "sex", "localsip", "localsip2", "localsip3", "leavehomeact___1", "leavehomeact___2", "leavehomeact___3", "leavehomeact___4", "leavehomeact___5", "leavehomeact___6", "leavehomeact___7", "leavehomereason___1", "leavehomereason___2", "leavehomereason___3", "leavehomereason___4", "leavehomereason___5", "leavehomereason___6", "leavehomereason___7", "localsiphours", "covidsick", "hhcovidsick", "ffcovidsick", "Classification", "covidtest", "educ", "hhincome"))
+
+tidy_data <- tidy_data %>%
+  filter(is.na(tidy_data$race)== FALSE & is.na(tidy_data$localsiphours)== FALSE)
 ```
 
 # Introduction and Data, including Research Questions
@@ -56,7 +59,6 @@ number_of_hours_two <- tidy_data %>%
 ```
 
 ```{r data-analysis, fig.width = 9, fig.height= 2.5}
-tidy_data$race[is.na(tidy_data$race) == TRUE] <- "6"
 tidy_data$Classification[is.na(tidy_data$Classification)== TRUE] <- "Urban"
 number_of_hours$race[number_of_hours$race == 0] <- "American Indian"
 number_of_hours$race[number_of_hours$race == 1] <- "Asian"
@@ -78,10 +80,25 @@ ggplot(data=number_of_hours, aes(x=race, y=hours)) +
 tidy_data <- tidy_data %>%
   mutate(asian = ifelse(race == 1, 1, 0)) %>%
   mutate(white = ifelse(race == 4, 1, 0)) %>%
-  drop_na()
+  mutate(unknown = ifelse(race == 6, 1, 0)) %>%
+  mutate(africanamerican = ifelse(race == 3, 1, 0)) %>%
+  mutate(americanindian = ifelse(race == 0, 1, 0)) %>%
+  mutate(mixed = ifelse(race == 5, 1, 0)) %>%
+  mutate(hawaiian = ifelse(race == 2, 1, 0)) 
   
 
-# t.test(tidy_data$localsiphours~tidy_data$asian, var.equal=FALSE)
-# t.test(tidy_data$localsiphours~tidy_data$white, var.equal=FALSE)
+t.test(tidy_data$localsiphours~tidy_data$asian, var.equal=FALSE)
+t.test(tidy_data$localsiphours~tidy_data$white, var.equal=FALSE)
+t.test(tidy_data$localsiphours~tidy_data$unknown, var.equal=FALSE)
+t.test(tidy_data$localsiphours~tidy_data$africanamerican, var.equal=FALSE)
+t.test(tidy_data$localsiphours~tidy_data$americanindian, var.equal=FALSE)
+t.test(tidy_data$localsiphours~tidy_data$mixed, var.equal=FALSE)
+t.test(tidy_data$localsiphours~tidy_data$hawaiian, var.equal=FALSE)
+summary(aov(localsiphours~race,data=tidy_data))
+
+# filter out unkonwn and observe results
+tidy_data <- tidy_data %>%
+  filter(unknown ==0)
+
 summary(aov(localsiphours~race,data=tidy_data))
 ```
