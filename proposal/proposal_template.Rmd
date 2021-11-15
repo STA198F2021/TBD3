@@ -4,11 +4,7 @@ subtitle: "due October 11, 2021 by 11:59 PM "
 author: "Grace Lee and Ji Yun Hyo, TBD3"
 date: "October 11th, 2021"
 output: pdf_document
-<<<<<<< HEAD
-fontsize: 11pt
-=======
-fontsize: 7 pt
->>>>>>> 2b1c74c1bb01fd272100be1b74e5bf1901792b34
+fontsize: 11 pt
 ---
 
 # Load Packages
@@ -77,4 +73,15 @@ ggplot(data=number_of_hours, aes(x=race, y=hours)) +
     x = "Race",
     title = "Number of Hours Remained at Home by Race",
     ) 
+```
+```{r t-test}
+tidy_data <- tidy_data %>%
+  mutate(asian = ifelse(race == 1, 1, 0)) %>%
+  mutate(white = ifelse(race == 4, 1, 0)) %>%
+  drop_na()
+  
+
+# t.test(tidy_data$localsiphours~tidy_data$asian, var.equal=FALSE)
+# t.test(tidy_data$localsiphours~tidy_data$white, var.equal=FALSE)
+summary(aov(localsiphours~race,data=tidy_data))
 ```
