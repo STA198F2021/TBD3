@@ -113,10 +113,17 @@ summary(aov(localsiphours~race,data=tidy_data_without_unknown))
 ```
 
 ```{r regression}
-#fit logistic regression model
+
+# fit logistic regression model with UNKNOWN
 localsiphours_fit <- linear_reg() %>%
   set_engine("lm") %>%
   fit(localsiphours ~ asian + white + africanamerican + americanindian + mixed + hawaiian, data = tidy_data)
 
+#fit logistic regression model without UNKNOWN
+localsiphours_fit_without_unknown <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(localsiphours ~ asian + white + africanamerican + americanindian + mixed + hawaiian, data = tidy_data_without_unknown)
+
 tidy(localsiphours_fit, conf.int=TRUE, exponentiate = TRUE)
+tidy(localsiphours_fit_without_unknown, conf.int=TRUE, exponentiate = TRUE)
 ```
