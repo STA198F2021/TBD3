@@ -100,5 +100,6 @@ summary(aov(localsiphours~race,data=tidy_data))
 tidy_data <- tidy_data %>%
   filter(unknown ==0)
 
+# ANOVA test
 summary(aov(localsiphours~race,data=tidy_data))
 ```
