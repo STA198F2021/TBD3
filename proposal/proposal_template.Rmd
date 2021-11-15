@@ -14,6 +14,8 @@ library(dplyr)
 library(tidyverse)
 library(sf)
 library(viridis)
+library(tidyverse)
+library(tidymodels)
 library(ggspatial) #for scale annotation
 ``` 
 
@@ -86,20 +88,35 @@ tidy_data <- tidy_data %>%
   mutate(mixed = ifelse(race == 5, 1, 0)) %>%
   mutate(hawaiian = ifelse(race == 2, 1, 0)) 
   
-
+# t-test insignificant p-value (do not reject null hypothesis)
 t.test(tidy_data$localsiphours~tidy_data$asian, var.equal=FALSE)
 t.test(tidy_data$localsiphours~tidy_data$white, var.equal=FALSE)
-t.test(tidy_data$localsiphours~tidy_data$unknown, var.equal=FALSE)
 t.test(tidy_data$localsiphours~tidy_data$africanamerican, var.equal=FALSE)
 t.test(tidy_data$localsiphours~tidy_data$americanindian, var.equal=FALSE)
 t.test(tidy_data$localsiphours~tidy_data$mixed, var.equal=FALSE)
 t.test(tidy_data$localsiphours~tidy_data$hawaiian, var.equal=FALSE)
+
+# t-test significant p-value (reject null hypothesis)
+t.test(tidy_data$localsiphours~tidy_data$unknown, var.equal=FALSE)
+t.test(tidy_data$localsiphours~tidy_data$sex, var.equal=FALSE)
+
+# ANOVA with UNKOWN
 summary(aov(localsiphours~race,data=tidy_data))
+summary(aov(localsiphours~state,data=tidy_data))
 
 # filter out unkonwn and observe results
-tidy_data <- tidy_data %>%
+tidy_data_without_unknown <- tidy_data %>%
   filter(unknown ==0)
 
 # ANOVA test
-summary(aov(localsiphours~race,data=tidy_data))
+summary(aov(localsiphours~race,data=tidy_data_without_unknown))
+```
+
+```{r regression}
+#fit logistic regression model
+localsiphours_fit <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(localsiphours ~ asian + white + africanamerican + americanindian + mixed + hawaiian, data = tidy_data)
+
+tidy(localsiphours_fit, conf.int=TRUE, exponentiate = TRUE)
 ```
