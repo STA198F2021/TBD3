@@ -79,6 +79,7 @@ ggplot(data=number_of_hours, aes(x=race, y=hours)) +
     ) 
 ```
 ```{r t-test}
+# preprocess data for t-tests
 tidy_data <- tidy_data %>%
   mutate(asian = ifelse(race == 1, 1, 0)) %>%
   mutate(white = ifelse(race == 4, 1, 0)) %>%
@@ -86,7 +87,13 @@ tidy_data <- tidy_data %>%
   mutate(africanamerican = ifelse(race == 3, 1, 0)) %>%
   mutate(americanindian = ifelse(race == 0, 1, 0)) %>%
   mutate(mixed = ifelse(race == 5, 1, 0)) %>%
-  mutate(hawaiian = ifelse(race == 2, 1, 0)) 
+  mutate(hawaiian = ifelse(race == 2, 1, 0)) %>%
+  mutate(noschool = ifelse(educ == 1, 1, 0)) %>%
+  mutate(g1_8 = ifelse(educ == 2, 1, 0)) %>%
+  mutate(g9_11 = ifelse(educ == 3, 1, 0)) %>%
+  mutate(g12 = ifelse(educ == 4, 1, 0)) %>%
+  mutate(technical_college = ifelse(educ == 5, 1, 0)) %>%
+  mutate(at_least_college = ifelse(educ == 6, 1, 0))
   
 # t-test by RACE insignificant p-value (do not reject null hypothesis)
 t.test(tidy_data$localsiphours~tidy_data$asian, var.equal=FALSE)
@@ -112,6 +119,7 @@ tidy_data_without_unknown <- tidy_data %>%
 
 # ANOVA test
 summary(aov(localsiphours~race,data=tidy_data_without_unknown))
+summary(aov(localsiphours~state,data=tidy_data_without_unknown))
 ```
 
 ```{r regression}
