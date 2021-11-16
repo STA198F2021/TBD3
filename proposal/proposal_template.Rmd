@@ -86,6 +86,12 @@ number_of_hours_two <- tidy_data %>%
 ```{r data-analysis, fig.width = 9, fig.height= 2.5}
 tidy_data$Classification[is.na(tidy_data$Classification)== TRUE] <- "Urban"
 
+reasons <-c("Work", "Provide Care for Others", "Grocery Shopping", "Essential Shopping", "Exercise", "Walking Dog", "Other")
+freq_reasons <- c(sum(tidy_data$leavehomereason___1, na.rm = TRUE), sum(tidy_data$leavehomereason___2, na.rm = TRUE), sum(tidy_data$leavehomereason___3, na.rm = TRUE), sum(tidy_data$leavehomereason___4, na.rm = TRUE), sum(tidy_data$leavehomereason___5, na.rm = TRUE), sum(tidy_data$leavehomereason___6, na.rm = TRUE), sum(tidy_data$leavehomereason___7, na.rm = TRUE))
+reasons_for_leaving = data.frame(reasons, freq_reasons)
+
+print(reasons_for_leaving)
+
 
 pie_chart <- tidy_data %>%
   group_by(race) %>%
@@ -113,6 +119,14 @@ ggplot(data=number_of_hours, aes(x=race, y=hours)) +
     x = "Race",
     title = "Number of Hours Remained at Home by Race",
     ) 
+
+ggplot(data=reasons_for_leaving, aes(x=reasons, y=freq_reasons)) +
+  geom_bar(stat="identity") +
+  labs (
+    y = "Frequency",
+    x = "Reasons",
+    title = "Reasons for Leaving the House",
+    ) 
 ```
 ```{r t-test}
 # preprocess data for t-tests
@@ -132,8 +146,8 @@ tidy_data <- tidy_data %>%
   mutate(at_least_college = ifelse(educ == 6, 1, 0))
   
 # t-test by EDUCATION insignificant p-value (do not reject null hypothesis)
-#t.test(tidy_data$localsiphours~tidy_data$noschool, var.equal=FALSE)
-#t.test(tidy_data$localsiphours~tidy_data$g1_8, var.equal=FALSE)
+# t.test(tidy_data$localsiphours~tidy_data$noschool, var.equal=FALSE)
+# t.test(tidy_data$localsiphours~tidy_data$g1_8, var.equal=FALSE)
 t.test(tidy_data$localsiphours~tidy_data$g9_11, var.equal=FALSE)
 t.test(tidy_data$localsiphours~tidy_data$g12, var.equal=FALSE)
 t.test(tidy_data$localsiphours~tidy_data$technical_college, var.equal=FALSE)
