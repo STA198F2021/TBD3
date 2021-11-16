@@ -65,9 +65,9 @@ Thunström, L., Newbold, S. C., Finnoff, D., Ashworth, M., &amp; Shogren, J. F. 
 
 
 ```{r summmarize-hours, warning = FALSE}
-tidy_data$race[tidy_data$race == 0] <- "American Indian"
+tidy_data$race[tidy_data$race == 0] <- "Native American"
 tidy_data$race[tidy_data$race == 1] <- "Asian"
-tidy_data$race[tidy_data$race == 2] <- "Native Hawaiian"
+tidy_data$race[tidy_data$race == 2] <- "Hawaiian"
 tidy_data$race[tidy_data$race == 3] <- "African American"
 tidy_data$race[tidy_data$race == 4] <- "White"
 tidy_data$race[tidy_data$race == 5] <- "Mixed"
@@ -135,9 +135,9 @@ tidy_data <- tidy_data %>%
   mutate(white = ifelse(race == "White", 1, 0)) %>%
   mutate(unknown = ifelse(race == "Unknown", 1, 0)) %>%
   mutate(africanamerican = ifelse(race == "African American", 1, 0)) %>%
-  mutate(americanindian = ifelse(race == "American Indian", 1, 0)) %>%
+  mutate(americanindian = ifelse(race == "Native American", 1, 0)) %>%
   mutate(mixed = ifelse(race == "Mixed", 1, 0)) %>%
-  mutate(hawaiian = ifelse(race == "Native Hawaiian", 1, 0)) %>%
+  mutate(hawaiian = ifelse(race == "Hawaiian", 1, 0)) %>%
   mutate(noschool = ifelse(educ == 1, 1, 0)) %>%
   mutate(g1_8 = ifelse(educ == 2, 1, 0)) %>%
   mutate(g9_11 = ifelse(educ == 3, 1, 0)) %>%
@@ -178,6 +178,57 @@ tidy_data_without_unknown <- tidy_data %>%
 # ANOVA test
 summary(aov(localsiphours~race,data=tidy_data_without_unknown))
 summary(aov(localsiphours~state,data=tidy_data_without_unknown))
+```
+
+```{r confidence_interval_plots, warning=FALSE}
+# 95% confidence interval by race
+dt <- tidy_data%>%
+  group_by(race)%>%
+  filter(race != "Hawaiian")%>%
+  summarise(
+    mean = mean(localsiphours),
+    lci = t.test(localsiphours, conf.level = 0.95)$conf.int[1],
+    uci = t.test(localsiphours, conf.level = 0.95)$conf.int[2])
+dt
+
+pl2 <- ggplot(data = dt)
+pl2 <- pl2 + geom_point(aes(x=race, y=mean), color= "red")
+pl2 <- pl2 + geom_errorbar(aes(x=race, ymin=lci, ymax= uci), width = 0.4, color ="red", size = 1)
+pl2 <- pl2 + geom_text(aes(x=race, y=lci, label = round(lci,1)), size= 2, vjust = 1)
+pl2 <- pl2 + geom_text(aes(x=race, y=uci, label = round(uci,1)), size= 2, vjust = -1)
+pl2 <- pl2 + theme_classic()
+pl2 <- pl2 + labs(title = "Mean Hours Spent at Home with 95% Confidence Intervals")
+pl2 <- pl2 + labs(x= "Race", y = "Mean Hours Spent Home")
+pl2
+
+# 95% confidence interval by education
+tidy_data$educ[tidy_data$educ == 1] <- "No School"
+tidy_data$educ[tidy_data$educ == 2] <- "G1-8"
+tidy_data$educ[tidy_data$educ == 3] <- "G9-12"
+tidy_data$educ[tidy_data$educ == 4] <- "GED"
+tidy_data$educ[tidy_data$educ == 5] <- "Some College"
+tidy_data$educ[tidy_data$educ == 6] <- "4 Years College"
+tidy_data$educ[tidy_data$educ == 7] <- "Not Sure"
+tidy_data$educ[is.na(tidy_data$educ)] <- "Not Sure"
+
+dt <- tidy_data%>%
+  group_by(educ)%>%
+  filter(educ != "G9-12")%>%
+  summarise(
+    mean = mean(localsiphours),
+    lci = t.test(localsiphours, conf.level = 0.95)$conf.int[1],
+    uci = t.test(localsiphours, conf.level = 0.95)$conf.int[2])
+dt
+
+pl2 <- ggplot(data = dt)
+pl2 <- pl2 + geom_point(aes(x=educ, y=mean), color= "red")
+pl2 <- pl2 + geom_errorbar(aes(x=educ, ymin=lci, ymax= uci), width = 0.4, color ="red", size = 1)
+pl2 <- pl2 + geom_text(aes(x=educ, y=lci, label = round(lci,1)), size= 2, vjust = 1)
+pl2 <- pl2 + geom_text(aes(x=educ, y=uci, label = round(uci,1)), size= 2, vjust = -1)
+pl2 <- pl2 + theme_classic()
+pl2 <- pl2 + labs(title = "Mean Hours Spent at Home with 95% Confidence Intervals")
+pl2 <- pl2 + labs(x= "Education Level", y = "Mean Hours Spent Home")
+pl2
 ```
 
 ```{r regression}
