@@ -17,6 +17,7 @@ library(viridis)
 library(tidyverse)
 library(tidymodels)
 library(ggspatial) #for scale annotation
+library(ggplot2)
 ``` 
 
 # Load Data
@@ -50,6 +51,14 @@ Centers for Disease Control and Prevention. (2020, September 3). Timing of state
 Thunström, L., Newbold, S. C., Finnoff, D., Ashworth, M., &amp; Shogren, J. F. (2020, May 21). The benefits and costs of using social distancing to flatten the curve for covid-19: Journal of Benefit-Cost Analysis. Cambridge. 
 
 ```{r summmarize-hours, warning = FALSE}
+tidy_data$race[tidy_data$race == 0] <- "American Indian"
+tidy_data$race[tidy_data$race == 1] <- "Asian"
+tidy_data$race[tidy_data$race == 2] <- "Native Hawaiian"
+tidy_data$race[tidy_data$race == 3] <- "African American"
+tidy_data$race[tidy_data$race == 4] <- "White"
+tidy_data$race[tidy_data$race == 5] <- "Mixed"
+tidy_data$race[tidy_data$race == 6] <- "Unknown"
+
 number_of_hours <- tidy_data %>%
   group_by(race) %>%
   summarise_at(vars(localsiphours), list(hours = mean),na.rm = TRUE) #to summarize count
@@ -62,13 +71,20 @@ number_of_hours_two <- tidy_data %>%
 
 ```{r data-analysis, fig.width = 9, fig.height= 2.5}
 tidy_data$Classification[is.na(tidy_data$Classification)== TRUE] <- "Urban"
-number_of_hours$race[number_of_hours$race == 0] <- "American Indian"
-number_of_hours$race[number_of_hours$race == 1] <- "Asian"
-number_of_hours$race[number_of_hours$race == 2] <- "Native Hawaiian"
-number_of_hours$race[number_of_hours$race == 3] <- "African American"
-number_of_hours$race[number_of_hours$race == 4] <- "White"
-number_of_hours$race[number_of_hours$race == 5] <- "Mixed"
-number_of_hours$race[number_of_hours$race == 6] <- "Unknown"
+
+
+pie_chart <- tidy_data %>%
+  group_by(race) %>%
+  count() %>%
+  ungroup() %>%
+  mutate(perc = n / sum(n))
+
+ggplot(pie_chart, aes(x = "", y = race, fill = race)) +
+  geom_col() +
+  geom_text(position = position_stack(vjust = 0.5)) +
+  coord_polar(theta = "y")
+  
+
 
 ggplot(data=number_of_hours, aes(x=race, y=hours)) +
   geom_bar(stat="identity") +
