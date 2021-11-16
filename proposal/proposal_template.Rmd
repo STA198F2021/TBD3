@@ -30,7 +30,7 @@ tidy_data <- tidy_data %>%
 ```
 
 # Introduction and Data, including Research Questions
-In response to the COVID-19 pandemic, 42 states and territories issued mandatory stay-at-home orders between March 1 to May 31, 2020, affecting 2,355 (73%) of 3,233 U.S. counties (CDC, 2020). These stay-at-home policies reduced both population movement and person-to-person contact, which slowed the spread of COVID-19. In a study published by Cambridge University Press in May 2020, the total number of infections was projected to reach 287 million in the absence of stay-at-home and social distancing policies and 188 million with the enforcement of these policies, translating to 1.24 million lives saved (Thunström et al., 2020).  
+In response to the COVID-19 pandemic, 42 states and territories issued mandatory stay-at-home orders between March 1 to May 31, 2020 (CDC, 2020). These stay-at-home policies reduced both population movement and person-to-person contact, which slowed the spread of COVID-19. In a study published by Cambridge University Press in May 2020, the total number of infections was projected to reach 287 million in the absence of stay-at-home and social distancing policies and 188 million with the enforcement of these policies, translating to 1.24 million lives saved (Thunström et al., 2020).  
  
 Due to the importance of stay-at-home orders in slowing the spread of COVID in the United States, we want to ask if the average number of hours spent at home differed between different populations. For example, we want to ask if people of different races and income levels, among other variables, differed significantly in their mean number of hours spent at home. To do so, we used the dataset, “Associations of Urbanicity and Sociodemographic Characteristics with Protective Health Behaviors and Reasons for Leaving the Home during COVID-19,” found on the Harvard Dataverse. The data was collected through an online questionnaire of U.S. adults (N = 2,441) recruited through social media platforms such as Twitter, Instagram, and Facebook. The dataset had 66 variables corresponding to the questionnaire questions. We chose to focus on the survey responses pertaining to (1) age, (2) country & (3) state of residence, (4) race, (5) sex, (6) if local stay-at-home orders existed, (7) if the participant stayed home even if no order existed or (8) even if they didn’t know if an order existed, (9) how the participant protected themselves in public, (10) reasons for leaving home during the order, (11) average hours per day spent at home during the pandemic, (12) if the participant had contracted COVID, (13) if anyone in the household had contracted COVID, (14) if any close friends had contracted COVID, (15) if the participant lived in an urban, suburban, or rural area, (16) whether the participant had been tested for COVID, (17) educational attainment, and (18) annual income. Each participant/observation was identified by a unique participant ID. 
 
@@ -79,12 +79,18 @@ pie_chart <- tidy_data %>%
   ungroup() %>%
   mutate(perc = n / sum(n))
 
-ggplot(pie_chart, aes(x = "", y = race, fill = race)) +
-  geom_col() +
-  geom_text(position = position_stack(vjust = 0.5)) +
-  coord_polar(theta = "y")
-  
+print(pie_chart)
 
+
+# pie chart
+ggplot(pie_chart, aes(x="", y=perc, fill=race)) +
+  geom_bar(stat="identity", width=1) +
+  coord_polar("y", start=0)+
+  labs (
+    fill = "Race",
+    title = "Sample Population Composition by Race",
+    ) +
+  theme_void()
 
 ggplot(data=number_of_hours, aes(x=race, y=hours)) +
   geom_bar(stat="identity") +
