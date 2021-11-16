@@ -143,7 +143,9 @@ tidy_data <- tidy_data %>%
   mutate(g9_11 = ifelse(educ == 3, 1, 0)) %>%
   mutate(g12 = ifelse(educ == 4, 1, 0)) %>%
   mutate(technical_college = ifelse(educ == 5, 1, 0)) %>%
-  mutate(at_least_college = ifelse(educ == 6, 1, 0))
+  mutate(at_least_college = ifelse(educ == 6, 1, 0)) %>%
+  mutate(poorest = ifelse(hhincome == 1, 1, 0)) %>%
+  mutate(richest = ifelse(hhincome == 12, 1, 0))
   
 # t-test by EDUCATION insignificant p-value (do not reject null hypothesis)
 # t.test(tidy_data$localsiphours~tidy_data$noschool, var.equal=FALSE)
@@ -160,6 +162,10 @@ t.test(tidy_data$localsiphours~tidy_data$africanamerican, var.equal=FALSE)
 t.test(tidy_data$localsiphours~tidy_data$americanindian, var.equal=FALSE)
 t.test(tidy_data$localsiphours~tidy_data$mixed, var.equal=FALSE)
 t.test(tidy_data$localsiphours~tidy_data$hawaiian, var.equal=FALSE)
+
+# t-test by INCOME LEVEL
+t.test(tidy_data$localsiphours~tidy_data$poorest, var.equal=FALSE)
+t.test(tidy_data$localsiphours~tidy_data$richest, var.equal=FALSE)
 
 # t-test by RACE significant p-value (reject null hypothesis)
 t.test(tidy_data$localsiphours~tidy_data$unknown, var.equal=FALSE)
@@ -229,6 +235,30 @@ pl2 <- pl2 + theme_classic()
 pl2 <- pl2 + labs(title = "Mean Hours Spent at Home with 95% Confidence Intervals")
 pl2 <- pl2 + labs(x= "Education Level", y = "Mean Hours Spent Home")
 pl2
+
+# 95% confidence interval by income level
+dt <- tidy_data%>%
+  group_by(hhincome)%>%
+  filter(is.na(hhincome) == FALSE)%>%
+  summarise(
+    mean = mean(localsiphours),
+    lci = t.test(localsiphours, conf.level = 0.95)$conf.int[1],
+    uci = t.test(localsiphours, conf.level = 0.95)$conf.int[2])
+dt
+
+pl2 <- ggplot(data = dt)
+pl2 <- pl2 + geom_point(aes(x=as.factor(hhincome), y=mean, fill = as.factor(hhincome)), color= "red")
+pl2 <- pl2 + geom_errorbar(aes(x=hhincome, ymin=lci, ymax= uci), width = 0.4, color ="red", size = 1)
+pl2 <- pl2 + geom_text(aes(x=hhincome, y=lci, label = round(lci,1)), size= 2, vjust = 1)
+pl2 <- pl2 + geom_text(aes(x=hhincome, y=uci, label = round(uci,1)), size= 2, vjust = -1)
+pl2 <- pl2 + theme_classic()
+pl2 <- pl2 + labs(title = "Mean Hours Spent at Home with 95% Confidence Intervals")
+pl2 <- pl2 + labs(x= "Income Level", y = "Mean Hours Spent Home", fill = "okay")
+pl2 <- pl2 + scale_fill_discrete(name = "Income Levels", labels = c("1 - less than $9,999", "2 - $10,000 to $19,999", "3 - $20,000 to $29,999","4 - $30,000 to $39,999", "5 - $40,000 to $49,999", "6 - $50,000 to $59,999","7 - $60,000 to $69,999", "8 - $70,000 to $79,999", "9 - $80,000 to $89,999","10 - $90,000 to $99,999", "11 - $100,000 to $150,000", "12 - over $150,000"))
+pl2
+
+
+
 ```
 
 ```{r regression}
