@@ -2,49 +2,213 @@
 title: "Final Report"
 subtitle: "due November 16, 2021 by 11:59 PM "
 author: "Grace Lee and Jiyun Hyo"
-date: ""
+date: "November 16, 2021"
 output: pdf_document
+fontsize: 11 pt
 
 ---
+# Load Packages
 
-```{r libraries}
+```{r load-packages, message = FALSE, warning = FALSE}
 library(dplyr)
 library(tidyverse)
 library(sf)
 library(viridis)
+library(tidyverse)
+library(tidymodels)
 library(ggspatial) #for scale annotation
+library(ggplot2)
+``` 
+
+# Load Data
+```{r load-data, message = F, warning = FALSE}
+data <- read.csv(file = '../data/COVID_raw_12.8.csv')
+tidy_data <- select(data, c('Participant_ID', 'age',"usres", "state", "race", "sex", "localsip", "localsip2", "localsip3", "leavehomeact___1", "leavehomeact___2", "leavehomeact___3", "leavehomeact___4", "leavehomeact___5", "leavehomeact___6", "leavehomeact___7", "leavehomereason___1", "leavehomereason___2", "leavehomereason___3", "leavehomereason___4", "leavehomereason___5", "leavehomereason___6", "leavehomereason___7", "localsiphours", "covidsick", "hhcovidsick", "ffcovidsick", "Classification", "covidtest", "educ", "hhincome"))
+
+tidy_data <- tidy_data %>%
+  filter(is.na(tidy_data$race)== FALSE & is.na(tidy_data$localsiphours)== FALSE)
 ```
 
 
-```{r read_in_data, , echo=FALSE}
-data <- read.csv(file = '../data/COVID_raw_12.8.csv')
-tidy_data <- select(data, c('Participant_ID', 'age',"usres", "state", "race", "sex", "localsip", "localsip2", "localsip3", "leavehomeact___1", "leavehomeact___2", "leavehomeact___3", "leavehomeact___4", "leavehomeact___5", "leavehomeact___6", "leavehomeact___7", "leavehomereason___1", "leavehomereason___2", "leavehomereason___3", "leavehomereason___4", "leavehomereason___5", "leavehomereason___6", "leavehomereason___7", "localsiphours", "covidsick", "hhcovidsick", "ffcovidsick", "Classification", "covidtest", "educ", "hhincome"))
-tidy_data$race[is.na(tidy_data$race) == TRUE] <- "6"
+# Introduction and Data, including Research Questions
+In response to the COVID-19 pandemic, 42 states and territories issued mandatory stay-at-home orders between March 1 to May 31, 2020, affecting 2,355 (73%) of 3,233 U.S. counties (CDC, 2020). These stay-at-home policies reduced both population movement and person-to-person contact, which slowed the spread of COVID-19. In a study published by Cambridge University Press in May 2020, the total number of infections was projected to reach 287 million in the absence of stay-at-home and social distancing policies and 188 million with the enforcement of these policies, translating to 1.24 million lives saved (Thunström et al., 2020).  
+ 
+Due to the importance of stay-at-home orders in slowing the spread of COVID in the United States, we want to ask if the average number of hours spent at home differed between different populations. For example, we want to ask if people of different races and income levels, among other variables, differed significantly in their mean number of hours spent at home. We also wanted to ask if different demographic characteristics affected the probability that the participant had left the home at all.
+
+To do so, we used the dataset, “Associations of Urbanicity and Sociodemographic Characteristics with Protective Health Behaviors and Reasons for Leaving the Home during COVID-19,” found on the Harvard Dataverse (Burford, 2020). The data was collected between April 15-May 5, 2020 through a 15-minute self-completed online questionnaire of U.S. adults (N = 2,441). Participants were recruited through social media platforms such as Twitter, Instagram, and Facebook, were aged over 18 and currently residing in the U.S., and did not include essential service workers, who were excluded due to their need to leave the home for employment.
+
+The dataset had 66 variables corresponding to the questionnaire questions. We chose to focus on the survey responses pertaining to (1) age, (2) country & (3) state of residence, (4) race, (5) sex, (6) if local stay-at-home orders existed, (7) if the participant stayed home even if no order existed or (8) even if they didn’t know if an order existed, (9) how the participant protected themselves in public, (10) reasons for leaving home during the order, (11) average hours per day spent at home during the pandemic, (12) if the participant had contracted COVID, (13) if anyone in the household had contracted COVID, (14) if any close friends had contracted COVID, (15) if the participant lived in an urban, suburban, or rural area, (16) whether the participant had been tested for COVID, (17) educational attainment, and (18) annual income. Each participant/observation was identified by a unique participant ID.
+
+# Glimpse
+
+```{r glimpse, warning = FALSE}
+glimpse(tidy_data)
+```
+
+# Data Analysis Plan
+
+We excluded people who did not respond to race from the dataset. In addition, none of the participants indicated that they had completed no schooling or had not completed grades 1-8. We created no new variables. 
+
+In order to explore the relationships between certain demographic characteristics and hours stayed at home during the pandemic, we will conduct multiple two-sample t-tests comparing the mean number of hours spent at home during the pandemic between different races (e.g. Asian vs. non-Asian), levels of education, and income levels, among others. We also plan on constructing 95% confidence intervals regarding the number of hours spent at home for populations with and without formal stay-at-home orders. In addition, we plan on visualizing the most frequently cited methods of protection from COVID used when in public as well as reasons for leaving home during a stay-in-place order.
+
+At present, we hypothesize that Asian people will differ in their mean hours spent at home compared to white people, as they had 0.7 times the hospitalization rate of white people (CDC, 2020). We also hypothesize that people with incomes over $150,000 will have different/greater average hours spent at home due to having access to grocery and meal delivery services such as InstaCart, which would decrease the number of hours needed to be spent outside. This is further supported by the data, where grocery shopping was the highest cited reason for leaving the home and by reports that meal delivery services had increased by approximately 70% in March 2020 (Hobbs, 2020). To achieve these results, we would need significant p-values of under 0.05 from our t-tests. The 95% confidence intervals for mean hours spent at home should also completely overlap infrequently. The table and graph below give us a preliminary idea of the differences in average hours spent home among different populations such as urban vs. rural and between different races. 
+
+References: 
+
+Burford, K. G., 2020, "Replication Data for: Associations of Urbanicity and Sociodemographic Characteristics with Protective Health Behaviors and Reasons for Leaving the Home during COVID-19", https://doi.org/10.7910/DVN/7FA07D, Harvard Dataverse, V3
+
+Centers for Disease Control and Prevention. (2020, September 3). Timing of state and territorial COVID-19 stay-at-home orders and changes in population movement - United States, March 1–May 31, 2020. Centers for Disease Control and Prevention. 
+
+Hobbs, J. E., 2020, "Food supply chains during the COVID-19 pandemic", https://doi.org/10.1111/cjag.12237, Canadian Journal of Agricultural Economics, 
+
+Thunström, L., Newbold, S. C., Finnoff, D., Ashworth, M., &amp; Shogren, J. F. (2020, May 21). The benefits and costs of using social distancing to flatten the curve for covid-19: Journal of Benefit-Cost Analysis. Cambridge. 
+
+
+```{r summmarize-hours, warning = FALSE}
+tidy_data$race[tidy_data$race == 0] <- "American Indian"
+tidy_data$race[tidy_data$race == 1] <- "Asian"
+tidy_data$race[tidy_data$race == 2] <- "Native Hawaiian"
+tidy_data$race[tidy_data$race == 3] <- "African American"
+tidy_data$race[tidy_data$race == 4] <- "White"
+tidy_data$race[tidy_data$race == 5] <- "Mixed"
+tidy_data$race[tidy_data$race == 6] <- "Unknown"
+
 number_of_hours <- tidy_data %>%
   group_by(race) %>%
- # summarize(localsiphours) %>%
+  summarise_at(vars(localsiphours), list(hours = mean),na.rm = TRUE) #to summarize count
+
+number_of_hours_two <- tidy_data %>%
+  group_by(Classification) %>%
   summarise_at(vars(localsiphours), list(hours = mean),na.rm = TRUE) %>% #to summarize count
   print()
+```
+
+```{r data-analysis, fig.width = 9, fig.height= 2.5}
+tidy_data$Classification[is.na(tidy_data$Classification)== TRUE] <- "Urban"
+
+reasons <-c("Work", "Provide Care for Others", "Grocery Shopping", "Essential Shopping", "Exercise", "Walk Dog", "Other")
+freq_reasons <- c(sum(tidy_data$leavehomereason___1, na.rm = TRUE), sum(tidy_data$leavehomereason___2, na.rm = TRUE), sum(tidy_data$leavehomereason___3, na.rm = TRUE), sum(tidy_data$leavehomereason___4, na.rm = TRUE), sum(tidy_data$leavehomereason___5, na.rm = TRUE), sum(tidy_data$leavehomereason___6, na.rm = TRUE), sum(tidy_data$leavehomereason___7, na.rm = TRUE))
+reasons_for_leaving = data.frame(reasons, freq_reasons)
+
+print(reasons_for_leaving)
 
 
+pie_chart <- tidy_data %>%
+  group_by(race) %>%
+  count() %>%
+  ungroup() %>%
+  mutate(perc = n / sum(n))
 
-number_of_hours$race[number_of_hours$race == 0] <- "American Indian"
-number_of_hours$race[number_of_hours$race == 1] <- "Asian"
-number_of_hours$race[number_of_hours$race == 2] <- "Native Hawaiian"
-number_of_hours$race[number_of_hours$race == 3] <- "Black"
-number_of_hours$race[number_of_hours$race == 4] <- "White"
-number_of_hours$race[number_of_hours$race == 5] <- "Mixed"
-number_of_hours$race[number_of_hours$race == 6] <- "Unknown"
+print(pie_chart)
+
+
+# pie chart
+ggplot(pie_chart, aes(x="", y=perc, fill=race)) +
+  geom_bar(stat="identity", width=1) +
+  coord_polar("y", start=0)+
+  labs (
+    fill = "Race",
+    title = "Sample Population Composition by Race",
+    ) +
+  theme_void()
 
 ggplot(data=number_of_hours, aes(x=race, y=hours)) +
   geom_bar(stat="identity") +
   labs (
-    y = "Number of Hours Remained at Home",
+    y = "Average Hours Remained at Home",
     x = "Race",
     title = "Number of Hours Remained at Home by Race",
     ) 
 
-glimpse(data)
-glimpse(tidy_data)
-summary(tidy_data)
+ggplot(data=reasons_for_leaving, aes(x=reasons, y=freq_reasons)) +
+  geom_bar(stat="identity") +
+  labs (
+    y = "Frequency",
+    x = "Reasons",
+    title = "Reasons for Leaving the House",
+    ) 
 ```
+```{r t-test}
+# preprocess data for t-tests
+tidy_data <- tidy_data %>%
+  mutate(asian = ifelse(race == "Asian", 1, 0)) %>%
+  mutate(white = ifelse(race == "White", 1, 0)) %>%
+  mutate(unknown = ifelse(race == "Unknown", 1, 0)) %>%
+  mutate(africanamerican = ifelse(race == "African American", 1, 0)) %>%
+  mutate(americanindian = ifelse(race == "American Indian", 1, 0)) %>%
+  mutate(mixed = ifelse(race == "Mixed", 1, 0)) %>%
+  mutate(hawaiian = ifelse(race == "Native Hawaiian", 1, 0)) %>%
+  mutate(noschool = ifelse(educ == 1, 1, 0)) %>%
+  mutate(g1_8 = ifelse(educ == 2, 1, 0)) %>%
+  mutate(g9_11 = ifelse(educ == 3, 1, 0)) %>%
+  mutate(g12 = ifelse(educ == 4, 1, 0)) %>%
+  mutate(technical_college = ifelse(educ == 5, 1, 0)) %>%
+  mutate(at_least_college = ifelse(educ == 6, 1, 0))
+  
+# t-test by EDUCATION insignificant p-value (do not reject null hypothesis)
+# t.test(tidy_data$localsiphours~tidy_data$noschool, var.equal=FALSE)
+# t.test(tidy_data$localsiphours~tidy_data$g1_8, var.equal=FALSE)
+t.test(tidy_data$localsiphours~tidy_data$g9_11, var.equal=FALSE)
+t.test(tidy_data$localsiphours~tidy_data$g12, var.equal=FALSE)
+t.test(tidy_data$localsiphours~tidy_data$technical_college, var.equal=FALSE)
+t.test(tidy_data$localsiphours~tidy_data$at_least_college, var.equal=FALSE)
+
+# t-test by RACE insignificant p-value (do not reject null hypothesis)
+t.test(tidy_data$localsiphours~tidy_data$asian, var.equal=FALSE)
+t.test(tidy_data$localsiphours~tidy_data$white, var.equal=FALSE)
+t.test(tidy_data$localsiphours~tidy_data$africanamerican, var.equal=FALSE)
+t.test(tidy_data$localsiphours~tidy_data$americanindian, var.equal=FALSE)
+t.test(tidy_data$localsiphours~tidy_data$mixed, var.equal=FALSE)
+t.test(tidy_data$localsiphours~tidy_data$hawaiian, var.equal=FALSE)
+
+# t-test by RACE significant p-value (reject null hypothesis)
+t.test(tidy_data$localsiphours~tidy_data$unknown, var.equal=FALSE)
+
+# t-test by SEX significant p-value (reject null hypothesis)
+t.test(tidy_data$localsiphours~tidy_data$sex, var.equal=FALSE)
+
+# ANOVA with UNKOWN
+summary(aov(localsiphours~race,data=tidy_data))
+summary(aov(localsiphours~state,data=tidy_data))
+
+# filter out unkonwn and observe results
+tidy_data_without_unknown <- tidy_data %>%
+  filter(unknown ==0)
+
+# ANOVA test
+summary(aov(localsiphours~race,data=tidy_data_without_unknown))
+summary(aov(localsiphours~state,data=tidy_data_without_unknown))
+```
+
+```{r regression}
+
+# fit logistic regression model with Education
+localsiphours_fit_education <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(localsiphours ~ g9_11 + technical_college + at_least_college, data = tidy_data)
+
+# fit logistic regression model with UNKNOWN
+localsiphours_fit <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(localsiphours ~ asian + white + africanamerican + americanindian + mixed + hawaiian, data = tidy_data)
+
+#fit logistic regression model without UNKNOWN
+localsiphours_fit_without_unknown <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(localsiphours ~ asian + white + africanamerican + americanindian + mixed + hawaiian, data = tidy_data_without_unknown)
+
+#fit logistic regression model without Association Terms
+localsiphours_fit_without_unknown_association <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(localsiphours ~ asian + white + unknown + africanamerican + americanindian + mixed + hawaiian, data = tidy_data)
+
+tidy(localsiphours_fit, conf.int=TRUE, exponentiate = TRUE)
+tidy(localsiphours_fit_without_unknown, conf.int=TRUE, exponentiate = TRUE)
+tidy(localsiphours_fit_education, conf.int=TRUE, exponentiate = TRUE)
+tidy(localsiphours_fit_without_unknown_association, conf.int=TRUE, exponentiate = TRUE)
+```
+
+Conclusion
+
+Limitations
+The sample over-represented Hispanic non-white individuals while under-representing other races such as Black and Asian people. Thus, our results may be skewed due to having small sample sizes for certain demographics. 
