@@ -154,7 +154,6 @@ localsiphours_fit_without_unknown_association <- linear_reg() %>%
 
 tidy(localsiphours_fit, conf.int=TRUE, exponentiate = TRUE)
 tidy(localsiphours_fit_without_unknown, conf.int=TRUE, exponentiate = TRUE)
-
 tidy(localsiphours_fit_education, conf.int=TRUE, exponentiate = TRUE)
 tidy(localsiphours_fit_without_unknown_association, conf.int=TRUE, exponentiate = TRUE)
 ```
