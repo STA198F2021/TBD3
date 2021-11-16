@@ -103,13 +103,13 @@ ggplot(data=number_of_hours, aes(x=race, y=hours)) +
 ```{r t-test}
 # preprocess data for t-tests
 tidy_data <- tidy_data %>%
-  mutate(asian = ifelse(race == 1, 1, 0)) %>%
-  mutate(white = ifelse(race == 4, 1, 0)) %>%
-  mutate(unknown = ifelse(race == 6, 1, 0)) %>%
-  mutate(africanamerican = ifelse(race == 3, 1, 0)) %>%
-  mutate(americanindian = ifelse(race == 0, 1, 0)) %>%
-  mutate(mixed = ifelse(race == 5, 1, 0)) %>%
-  mutate(hawaiian = ifelse(race == 2, 1, 0)) %>%
+  mutate(asian = ifelse(race == "Asian", 1, 0)) %>%
+  mutate(white = ifelse(race == "White", 1, 0)) %>%
+  mutate(unknown = ifelse(race == "Unknown", 1, 0)) %>%
+  mutate(africanamerican = ifelse(race == "African American", 1, 0)) %>%
+  mutate(americanindian = ifelse(race == "American Indian", 1, 0)) %>%
+  mutate(mixed = ifelse(race == "Mixed", 1, 0)) %>%
+  mutate(hawaiian = ifelse(race == "Native Hawaiian", 1, 0)) %>%
   mutate(noschool = ifelse(educ == 1, 1, 0)) %>%
   mutate(g1_8 = ifelse(educ == 2, 1, 0)) %>%
   mutate(g9_11 = ifelse(educ == 3, 1, 0)) %>%
