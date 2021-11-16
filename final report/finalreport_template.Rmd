@@ -143,7 +143,7 @@ tidy_data <- tidy_data %>%
   mutate(g9_11 = ifelse(educ == 3, 1, 0)) %>%
   mutate(g12 = ifelse(educ == 4, 1, 0)) %>%
   mutate(technical_college = ifelse(educ == 5, 1, 0)) %>%
-  mutate(at_least_college = ifelse(educ == 6, 1, 0)) %>%
+  mutate(four_years_college = ifelse(educ == 6, 1, 0)) %>%
   mutate(poorest = ifelse(hhincome == 1, 1, 0)) %>%
   mutate(richest = ifelse(hhincome == 12, 1, 0))
   
@@ -153,7 +153,7 @@ tidy_data <- tidy_data %>%
 t.test(tidy_data$localsiphours~tidy_data$g9_11, var.equal=FALSE)
 t.test(tidy_data$localsiphours~tidy_data$g12, var.equal=FALSE)
 t.test(tidy_data$localsiphours~tidy_data$technical_college, var.equal=FALSE)
-t.test(tidy_data$localsiphours~tidy_data$at_least_college, var.equal=FALSE)
+t.test(tidy_data$localsiphours~tidy_data$four_years_college, var.equal=FALSE)
 
 # t-test by RACE insignificant p-value (do not reject null hypothesis)
 t.test(tidy_data$localsiphours~tidy_data$asian, var.equal=FALSE)
@@ -266,7 +266,7 @@ pl2
 # fit logistic regression model with Education
 localsiphours_fit_education <- linear_reg() %>%
   set_engine("lm") %>%
-  fit(localsiphours ~ g9_11 + technical_college + at_least_college, data = tidy_data)
+  fit(localsiphours ~ g9_11 + technical_college + four_years_college, data = tidy_data)
 
 # fit logistic regression model with UNKNOWN
 localsiphours_fit <- linear_reg() %>%
