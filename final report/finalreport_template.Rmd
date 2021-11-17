@@ -323,6 +323,7 @@ tidy_data$leavehomereason___5=as.factor(tidy_data$leavehomereason___5)
 tidy_data$leavehomereason___3=as.factor(tidy_data$leavehomereason___3)
 tidy_data$leavehomereason___6=as.factor(tidy_data$leavehomereason___6)
 tidy_data$leavehomereason___4=as.factor(tidy_data$leavehomereason___4)
+tidy_data$leavehomereason___1=as.factor(tidy_data$leavehomereason___1)
 
 # exercise
 exercise_by_gender <- tidy_data
@@ -358,6 +359,45 @@ essentialshop_by_gender_fit <- logistic_reg() %>%
   set_engine("glm") %>%
   fit(leavehomereason___4 ~ sex, data = essentialshop_by_gender, family = "binomial")
 tidy(essentialshop_by_gender_fit, conf.int=TRUE, exponentiate = TRUE)
+
+# working
+work_by_gender <- tidy_data %>%
+  filter(is.na(leavehomereason___1) == FALSE)
+work_by_gender$sex = relevel(work_by_gender$sex, ref = "Male")
+work_by_gender_fit <- logistic_reg() %>%
+  set_engine("glm") %>%
+  fit(leavehomereason___1 ~ sex, data = work_by_gender, family = "binomial")
+tidy(work_by_gender_fit, conf.int=TRUE, exponentiate = TRUE)
+
+
+```
+```{r visualize_logistic_reg}
+# visualize
+boxLabels = c("Exercise", "Grocery Shopping", "Dog Walking", "Other Essential Shopping", "Working")
+
+df <- data.frame(yAxis = length(boxLabels):1, 
+                 boxOdds = c(0.8159074, 0.6022504, 1.0978744,0.6030671,	0.5122374), 
+                  boxCILow = c(0.6600054,	0.4347917, 0.9001398, 0.4942309, 0.4141801	), 
+                 boxCIHigh = c(1.006145, 0.8220798, 1.3404133, 0.7357744, 0.6337078)
+                 )
+
+(p <- ggplot(df, aes(x = boxOdds, y = boxLabels)) + 
+    geom_vline(aes(xintercept = 0), size = .25, linetype = "dashed") + 
+    geom_errorbarh(aes(xmax = boxCIHigh, xmin = boxCILow), size = .5, height = 
+                    .2, color = "gray50") +
+    geom_point(size = 3.5, color = "orange") +
+    
+    geom_vline(xintercept=c(1), linetype="dotted")+
+    scale_x_continuous(breaks = seq(0.1, 1.5, 0.1), labels = seq(0.1, 1.5, 0.1),
+                       limits = c(0.09,1.5)) +
+    theme_bw()+
+    theme(panel.grid.minor = element_blank()) +
+    ylab("") +
+    xlab("Odds ratio") +
+    annotate(geom = "text", y =1.1, x = 1.5, 
+                     label = "", size = 3.5, hjust = 0) + 
+    ggtitle("Reasons for Leaving the House")
+) 
 ```
 
 Conclusion
