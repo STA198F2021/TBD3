@@ -27,29 +27,29 @@ tidy_data <- tidy_data %>%
   filter(is.na(tidy_data$race)== FALSE & is.na(tidy_data$localsiphours)== FALSE)
 ```
 
-# Introduction and Data, including Research Questions
+# Introduction, Data, and Research Questions
 
 In response to the COVID-19 pandemic, 42 states and territories issued mandatory stay-at-home orders between March 1 to May 31, 2020, affecting 2,355 (73%) of 3,233 U.S. counties (CDC, 2020). These stay-at-home policies reduced both population movement and person-to-person contact, which slowed the spread of COVID-19. In a study published by Cambridge University Press in May 2020, the total number of infections was projected to reach 287 million in the absence of stay-at-home and social distancing policies and 188 million with the enforcement of these policies, translating to 1.24 million lives saved (Thunström et al., 2020).  
  
-Due to the importance of stay-at-home orders in slowing the spread of COVID in the United States, we asked if the average number of hours spent at home differed between different populations in order to understand which demographic characteristics were associated with greater hours spent at home. Specifically, we asked if people of different races, income levels, and education levels, among other variables, differed significantly in their mean number of hours spent at home. Upon finding significant results, we did preliminary exploration into why results were significant gusing the responses in our dataset. 
+Due to the importance of stay-at-home orders in slowing the spread of COVID in the United States, we asked if the average number of hours spent at home differed between different populations. We wanted to understand which demographic characteristics were associated with greater hours spent at home. Specifically, we asked if people of different races, income levels, and education levels, among other variables, differed significantly in their mean number of hours spent at home.
 
 To answer these questions, we used the dataset, “Associations of Urbanicity and Sociodemographic Characteristics with Protective Health Behaviors and Reasons for Leaving the Home during COVID-19,” found on the Harvard Dataverse (Burford, 2020). The data was collected between April 15-May 5, 2020 through an anonymous 15-minute self-completed online questionnaire of U.S. adults (N = 2,441). Participants were approached and recruited through social media platforms such as Twitter, Instagram, and Facebook, aged over 18, currently residing in the U.S., and did not include essential service workers, who were excluded due to their need to leave the home for employment (Burford, 2020).
 
 To focus our analysis on hours spent at home and the associated demographic characteristics and reasons for staying home, we chose to focus only on a subset of variables. The dataset had 66 variables corresponding to the questionnaire questions. We chose to focus on the survey responses pertaining to (1) age, (2) country & (3) state of residence, (4) race, (5) sex, (6) if local stay-at-home orders existed, (7) if the participant stayed home even if no order existed or (8) even if they didn’t know if an order existed, (9) how the participant protected themselves in public, (10) reasons for leaving home during the order, (11) average hours spent at home per day during the pandemic, (12) if the participant had contracted COVID, (13) if anyone in the household had contracted COVID, (14) if any close friends had contracted COVID, (15) if the participant lived in an urban, suburban, or rural area, (16) whether the participant had been tested for COVID, (17) educational attainment, and (18) annual income. Each participant/observation was identified by a unique participant ID.
 
-# Data Analysis Plan
+# Methodology
 
-We excluded people who did not respond to race (response = NA) and number of hours spent at home (response = NA) from the dataset. We excluded Hawaiians and those with only grades 9-12 education in our visualizations and analysis (though not from the dataset) due to low sample size, which skewed results. We created new variables for each demographic examined in our analysis. Specifically, we created variables for each race as binaries where the value of the variable was “1” if the participant was the race denoted by the variable name (e.g. “Asian”) and “0” otherwise: for example, Asian people were denoted “1” in the variable, “Asian,” and non-Asian people were denoted as “0.” We created similar variables for white, African American, Native American, and Mixed. We did the same for each level of education and level of income.
+We excluded people who did not respond to race (response = NA) and number of hours spent at home (response = NA) from the dataset. We excluded Hawaiians (n = 3) and those with only grades 9-11 education (n = 2) in our visualizations and analysis (though not from the dataset) due to low sample size. We created new variables for each demographic examined in our analysis. Specifically, we created variables for each race as binaries where the value was “1” if the participant was the race denoted by the variable (e.g. “Asian”) and “0” otherwise: for example, Asian people were denoted “1” in the variable, “Asian,” and non-Asian people were denoted as “0.” We created similar variables for white, African American, Native American, and mixed races. We did the same for each level of education and level of income.
 
-In order to explore the relationship between certain demographic characteristics (predictor variables) and hours stayed at home during the pandemic (response variable), we conducted multiple two-sample t-tests comparing the mean number of hours spent at home during the pandemic between different races (e.g. Asian vs. non-Asian), levels of education, income levels, and sex. We used two-sample t-tests as the population parameters are unknown, and the groups being compared are sufficiently different and independent from each other that they could not be paired. We constructed 95% confidence intervals regarding the number of hours spent at home for different races, levels of education, income levels, and sex. 
+In order to explore the relationship between certain demographic characteristics (predictor variables) and hours stayed at home during the pandemic (response variable), we conducted multiple two-sample t-tests comparing the mean number of hours spent at home during the pandemic between different races (e.g. Asian vs. non-Asian), levels of education, income levels, and sex. We used two-sample t-tests as the population parameters are unknown, and the groups being compared are sufficiently different and independent from each other that they could not be paired. We constructed 95% confidence intervals regarding the number of hours spent at home for different races, levels of education, income levels, and sex. We did not conduct an ANOVA due to lower sample sizes leading to non-normal distributions. 
 
-We conducted a linear regression to see if age had any significant association with the number of hours spent at home. Upon finding significant differences between sexes in the number of hours spent at home, we conducted a logistic regression to determine the differences between sexes in odds ratios of reasons for leaving the home, including grocery shopping, exercise, and work in order to examine which factors led to a significant difference between sexes in number of hours spent at home. We conducted these tests while setting alpha = 0.05. 
+We conducted a linear regression to see if age had any significant association with the number of hours spent at home. Upon finding significant differences between sexes in the number of hours spent at home, we conducted a logistic regression to determine the odds ratios differences between sexes for reasons for leaving the home, including grocery shopping, exercise, and work, in order to examine which factors led to a significant difference between sexes in number of hours spent at home. We conducted these tests while setting alpha = 0.05. 
 
-# Visualizations
+# Visualizations and Data Analysis
 
-To understand the population, we visualized the racial composition of the sample and the associated mean number of hours spent at home with each race. We found that 88.5% of the sample was composed of Hispanic non-white individuals, with the next most represented racial groups being Asians (4.93%) followed by African Americans (1.66%). 
+To understand the population, we visualized the racial composition of the sample and the associated mean number of hours spent at home with each race. We found that 88.5% of the sample was composed of white, non-Hispanic persons, with the next most represented racial groups being Asians (4.93%) followed by African Americans (1.66%). We found that the mean number of hours spent at home for each race was approximately 21 hours, with all values being between 21.15 (for white people) to 22.78 (for people of unknown race) hours per day. Asian people spent an average of 21.93 hours at home every day, and African American people spent an average of 21.68 hours. 
 
-We also visualized the most cited reasons for leaving home during a stay-in-place order. We found that the most commonly cited reason for leaving home was grocery shopping followed by exercise, walking the dog, and other essential shopping. 
+We also visualized the most cited reasons for leaving home during a stay-in-place order. We found that the most commonly cited reason for leaving home was grocery shopping followed by exercise, walking the dog, and other essential shopping.
 
 ```{r summmarize-hours, warning = FALSE, echo = FALSE, results = FALSE}
 tidy_data$race[tidy_data$race == 0] <- "Native American"
@@ -62,9 +62,10 @@ tidy_data$race[tidy_data$race == 6] <- "Unknown"
 
 number_of_hours <- tidy_data %>%
   group_by(race) %>%
-  summarise_at(vars(localsiphours), list(hours = mean),na.rm = TRUE) #to summarize count
+  summarise_at(vars(localsiphours), list(hours = mean),na.rm = TRUE)%>% #to summarize count
+print() 
 
-number_of_hours_two <- tidy_data %>%
+number_of_hours_classification <- tidy_data %>%
   group_by(Classification) %>%
   summarise_at(vars(localsiphours), list(hours = mean),na.rm = TRUE) #to summarize count
 ```
@@ -113,10 +114,10 @@ ggplot(data=reasons_for_leaving, aes(x=reasons, y=freq_reasons)) +
     ) 
 ```
 
-We visualized 95% confidence intervals of the mean number of hours spent at home to see if there were any immediately noticeable differences between demographic groups. Specifically, we visualized confidence intervals for different levels of education and income. 
+We visualized 95% confidence intervals of the mean number of hours spent at home to see if there were any immediately noticeable differences between demographic groups. Specifically, we visualized confidence intervals for different races, levels of education, income, and sex. 
 
 ```{r t-test, echo = FALSE, results = FALSE}
-# preprocess data for t-tests
+# preprocess data for t-tests and confidence intervals
 tidy_data <- tidy_data %>%
   mutate(asian = ifelse(race == "Asian", 1, 0)) %>%
   mutate(white = ifelse(race == "White", 1, 0)) %>%
@@ -134,7 +135,15 @@ tidy_data <- tidy_data %>%
   mutate(poorest = ifelse(hhincome == 1, 1, 0)) %>%
   mutate(richest = ifelse(hhincome == 12, 1, 0))
   
-# t-test by EDUCATION insignificant p-value (do not reject null hypothesis)
+# t-test by RACE - insignificant p-value (do not reject null hypothesis)
+t.test(tidy_data$localsiphours~tidy_data$asian, var.equal=FALSE)
+t.test(tidy_data$localsiphours~tidy_data$white, var.equal=FALSE)
+t.test(tidy_data$localsiphours~tidy_data$africanamerican, var.equal=FALSE)
+t.test(tidy_data$localsiphours~tidy_data$americanindian, var.equal=FALSE)
+t.test(tidy_data$localsiphours~tidy_data$mixed, var.equal=FALSE)
+t.test(tidy_data$localsiphours~tidy_data$hawaiian, var.equal=FALSE)
+
+# t-test by EDUCATION - insignificant p-value (do not reject null hypothesis)
 
 # cannot conduct t-tests for noschool and g1_8 as these values had no observations
 # t.test(tidy_data$localsiphours~tidy_data$noschool, var.equal=FALSE)
@@ -143,14 +152,6 @@ t.test(tidy_data$localsiphours~tidy_data$g9_11, var.equal=FALSE)
 t.test(tidy_data$localsiphours~tidy_data$g12, var.equal=FALSE)
 t.test(tidy_data$localsiphours~tidy_data$technical_college, var.equal=FALSE)
 t.test(tidy_data$localsiphours~tidy_data$four_years_college, var.equal=FALSE)
-
-# t-test by RACE insignificant p-value (do not reject null hypothesis)
-t.test(tidy_data$localsiphours~tidy_data$asian, var.equal=FALSE)
-t.test(tidy_data$localsiphours~tidy_data$white, var.equal=FALSE)
-t.test(tidy_data$localsiphours~tidy_data$africanamerican, var.equal=FALSE)
-t.test(tidy_data$localsiphours~tidy_data$americanindian, var.equal=FALSE)
-t.test(tidy_data$localsiphours~tidy_data$mixed, var.equal=FALSE)
-t.test(tidy_data$localsiphours~tidy_data$hawaiian, var.equal=FALSE)
 
 # t-test by INCOME LEVEL
 t.test(tidy_data$localsiphours~tidy_data$poorest, var.equal=FALSE)
@@ -259,27 +260,19 @@ pl2
 
 # Results 
 
-We found no significant differences between races in terms of the mean hours spent at home. To test this, we conducted multiple two-sample t-tests comparing each race against the rest of the population, for example, White compared to non-White. No one race had a significantly different mean number of hours spent home compared to the rest of the population. 
+We found no significant differences where $\alpha$ = 0.05 among races in terms of the mean hours spent at home. We found this result through multiple two-sample t-tests comparing each race against the rest of the population, for example, African American compared to non-African American. No one race had a significantly different mean number of hours spent home compared to the rest of the population. This result is further supported by our 95% confidence intervals, which show significant overlap in mean hours spent home between participants in each race.
 
-In our linear regression, we did not find that age significantly impacted the mean number of hours spent at home. 
+We found no significant differences in mean hours spent home when comparing the highest income bracket (\$150,000+) to the rest of the population, and we also found no significant differences when comparing participants in the lowest income bracket (less than \$9,999) to the rest of the population in two-sample t-tests. This result is further supported by our 95% confidence intervals, which show significant overlap in the mean hours spent home between participants in each income level. 
 
-We also found significant differences in the mean number of hours spent at home between people who had attended a 4-year college and completed their degree and those who had not. WRITE THE 95% CONFIDENCE INTERVAL FOR IT HERE. ALSO CONSTRUCT ONE AS A VISUALIZATION?
+In our linear regression, we did not find that one-year increases in age significantly impacted the mean number of hours spent at home. 
 
-We found significant differences in the mean number of hours spent at home between the sexes, finding that on average, males spent less time at home than females did with a 95% confidence interval of [-2.598, -0.733] and rejecting the null hypothesis that the mean number of hours spent is the same between the two populations. To examine for which reasons males spent less time at home than females, we conducted a logistic regression for each reason examined in the study. We found that, compared to males, females had a odds ratio of exercising, grocery shopping, and working (95% CI: ). 
+We found significant differences (p-value = 0.01724) in the mean number of hours spent at home between people who had attended some college and those who had not, rejecting the null hypothesis that the mean number of hours spent is the same between the two populations. The two-sample t-test result was supported by the 95% confidence interval which indicated that people who had completed some college spent [0.199, 2.05] more hours at home than the rest of the population. 
 
-# Conclusion, Limitations, and Future Directions
+We found significant differences (p-value = 0.00047) in the mean number of hours spent at home between the sexes, rejecting the null hypothesis that the mean number of hours spent is the same between the two populations. We found that on average, males spent less time at home than females did with a 95% confidence interval of [-2.598, -0.733]. 
 
-In examining the relationship between mean hours spent at home and certain demographic characteristics, we found that there were no significant differences in the number of hours spent at home between different races. We found our results surprising given that the COVID cases and hospitalization rates differ between races. We had hypothesized that Asian people would differ in their mean hours spent at home compared to the rest of the population, as they had 0.7 times the case rate of white people, who comprised nearly 90% of the sample size (CDC, 2020). 
+To examine for which reasons men spent less time at home than women, we conducted a logistic regression for each reason for leaving the home examined in the study: grocery shopping, exercising, essential shopping, walking the dog, and work. We found that, compared to men, women had a significantly lower (p-value < 0.05) odds ratio compared to men for grocery shopping, other essential shopping, and working as reasons for leaving the home. Specifically, women were [95% CI: 0.435, 0.822] less likely to leave the home for grocery shopping than men, [0.494, 0.736] times less likely to leave the home for essential shopping, and [0.414, 0.634] times less likely to leave the home for work.
 
-We found no significant differences in mean hours spent at home comparing through two-sample t-tests comparing those at the highest level of income compared to the rest of the population, which we found surprising given that we had hypothesized that people with incomes over $150,000 would have different/greater average hours spent at home due to having access to grocery and meal delivery services such as InstaCart, which would decrease the number of hours needed to be spent outside. This is further supported by the data, where grocery shopping was the highest cited reason for leaving the home and by reports that meal delivery services had increased by approximately 70% in March 2020 (Hobbs, 2020).
-
-We also found significant differences in the mean number of hours spent at home between those who had completed a four-year college degree and those who had not. Level of education may therefore have an impact on the number of hours
-
-We found significant differences in the mean number of hours spent at home during the pandemic between males and females. We delved deeper into the reasons for why the significant number of hours spent at home differed between males and females. Further analysis showed that males were WRITE ODDS RATIOS This is unsurprising, as men were reported to participate in more hours of exercise and in a greater variety of exercise activities than women, since exercise was one of the most highly cited reasons for leaving the home (Hickey & Mason, 2017).
-
-The sample over-represented Hispanic non-white individuals (88.5% in sample vs. 60.1% in U.S. population) while under-representing other races such as Black and Asian people according to the U.S. Census data. Thus, our results may be skewed due to having small sample sizes for certain demographics. 
-
-In future analysis, examining data from later periods of quarantine may also yield different results as restlessness and “cabin fever” during quarantine could lead to people leaving home for other, non-essential reasons more often, and it could be possible that different demographics may be disproportionately prone to this behavior due to different living conditions. 
+Visualized below is a table showing the odds ratio for leaving the home for grocery shopping, with "Male" as the reference group.
 
 ```{r logistic_reg, echo = FALSE, results = FALSE}
 tidy_data$sex=as.factor(tidy_data$sex)
@@ -324,7 +317,8 @@ work_by_gender_fit <- logistic_reg() %>%
   fit(leavehomereason___1 ~ sex, data = work_by_gender, family = "binomial")
 tidy(work_by_gender_fit, conf.int=TRUE, exponentiate = TRUE)
 ```
-```{r visualize_grocery_shopping_logistic_regression, warning = FALSE}
+
+```{r visualize_grocery_shopping_logistic_regression, warning = FALSE, echo = FALSE}
 # grocery shopping
 grocery_by_gender <- tidy_data %>%
   filter(is.na(leavehomereason___3) == FALSE)
@@ -363,6 +357,23 @@ df <- data.frame(yAxis = length(boxLabels):1,
     ggtitle("Reasons for Leaving the House")
 ) 
 ```
+
+# Conclusion, Limitations, and Future Directions
+
+In examining the relationship between mean hours spent at home and certain demographic characteristics, we found that there were no significant differences in the number of hours spent at home among different races. We found our results surprising given that the COVID cases and hospitalization rates differ between races. We had hypothesized that Asian people would differ in their mean hours spent at home compared to the rest of the population, as they had 0.7 times the case rate of white people, who comprised nearly 90% of the sample size (CDC, 2020), but our results proved insiginficant
+
+We found no significant differences in mean hours spent at home comparing participants in the highest-income group compared to the rest of the population, which we found surprising given that we had hypothesized that people with incomes over $150,000 would have different/greater average hours spent at home due to having access to grocery and meal delivery services such as InstaCart, which would decrease the number of hours needed to be spent outside. This hypothesis was due to reports that meal delivery services had increased by approximately 70% in March 2020 (Hobbs, 2020).
+
+We found significant differences in the mean number of hours spent at home between those who had completed some college education and those who had not. Level of education may therefore have an impact on the number of hours, though the exact relationship is unclear. 
+
+We found significant differences in the mean number of hours spent at home during the pandemic between males and females, with men spending less time in the home. We delved deeper into the reasons for why the significant number of hours spent at home differed between males and females. Further analysis showed that males had significantly greater odds of leaving the home for reasons such as grocery shopping, other essential shopping, and work. While exercise was not a significant (p-value = 0.0584), we felt the p-value was low enough to include it as another significant reason in why men spent less time in the home than women. Overall, the result is unsurprising as men were reported to participate in more hours of exercise and in a greater variety of exercise activities than women, and exercise was one of the most highly cited reasons for leaving the home (Hickey & Mason, 2017).
+
+The sample over-represented non-Hispanic white individuals (88.5% in sample vs. 60.1% in U.S. population) while under-representing other races such as Black and Asian people according to the U.S. Census data. Females were also over-represented in the study, constituting 71.7% of the sample while only 50.8% of the population, according to census data. Thus, our results may be skewed due to having small and/or unrepresentative sample sizes for certain demographics. We were also unable to conduct an ANOVA test due to not satisfying all conditions for the tes. Our analysis was also limited to comparing one group against the rest of the population. Having analysis comparing specific groups (e.g. comparing White and Asian) may yield different results. 
+
+Overall, mean hours spent at home did not differ significantly between races and income levels. Mean hours spent at home, however, did differ between education levels and sex, and men specifically left home for the purposes of grocery shopping, other essential shopping, and work. Thus, being female and having at least some college education was associated with the greatest number of hours spent at home. 
+
+In future analysis, examining data from later periods of quarantine may also yield different results as restlessness and “cabin fever” during quarantine could lead to people leaving home for other, non-essential reasons more often, and it could be possible that different demographics may be disproportionately prone to this behavior due to different living conditions. 
+
 
 # References
 
