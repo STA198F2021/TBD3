@@ -168,7 +168,7 @@ tidy_data_without_unknown <- tidy_data %>%
   filter(unknown ==0)
 ```
 
-```{r confidence_interval_plots, echo = FALSE, warning=FALSE}
+```{r confidence_interval_plots, echo = FALSE, warning=FALSE, fig.height = 4}
 # 95% confidence interval by race
 dt <- tidy_data%>%
   group_by(race)%>%
