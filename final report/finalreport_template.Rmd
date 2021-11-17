@@ -317,6 +317,49 @@ tidy(localsiphours_fit_age, conf.int=TRUE, exponentiate = TRUE)
 tidy(localsiphours_fit_without_unknown_association, conf.int=TRUE, exponentiate = TRUE)
 ```
 
+```{r logistic_reg}
+tidy_data$sex=as.factor(tidy_data$sex)
+tidy_data$leavehomereason___5=as.factor(tidy_data$leavehomereason___5)
+tidy_data$leavehomereason___3=as.factor(tidy_data$leavehomereason___3)
+tidy_data$leavehomereason___6=as.factor(tidy_data$leavehomereason___6)
+tidy_data$leavehomereason___4=as.factor(tidy_data$leavehomereason___4)
+
+# exercise
+exercise_by_gender <- tidy_data
+exercise_by_gender$sex = relevel(exercise_by_gender$sex, ref = "Male")
+exercise_by_gender_fit <- logistic_reg() %>%
+  set_engine("glm") %>%
+  fit(leavehomereason___5 ~ sex, data = exercise_by_gender, family = "binomial")
+tidy(exercise_by_gender_fit, conf.int=TRUE, exponentiate = TRUE)
+
+# grocery shopping
+grocery_by_gender <- tidy_data %>%
+  filter(is.na(leavehomereason___3) == FALSE)
+grocery_by_gender$sex = relevel(grocery_by_gender$sex, ref = "Male")
+grocery_by_gender_fit <- logistic_reg() %>%
+  set_engine("glm") %>%
+  fit(leavehomereason___3 ~ sex, data = grocery_by_gender, family = "binomial")
+tidy(grocery_by_gender_fit, conf.int=TRUE, exponentiate = TRUE)
+
+# dog walking
+dogwalking_by_gender <- tidy_data %>%
+  filter(is.na(leavehomereason___6) == FALSE)
+dogwalking_by_gender$sex = relevel(dogwalking_by_gender$sex, ref = "Male")
+dogwalking_by_gender_fit <- logistic_reg() %>%
+  set_engine("glm") %>%
+  fit(leavehomereason___6 ~ sex, data = dogwalking_by_gender, family = "binomial")
+tidy(dogwalking_by_gender_fit, conf.int=TRUE, exponentiate = TRUE)
+
+# other essential shopping
+essentialshop_by_gender <- tidy_data %>%
+  filter(is.na(leavehomereason___4) == FALSE)
+essentialshop_by_gender$sex = relevel(essentialshop_by_gender$sex, ref = "Male")
+essentialshop_by_gender_fit <- logistic_reg() %>%
+  set_engine("glm") %>%
+  fit(leavehomereason___4 ~ sex, data = essentialshop_by_gender, family = "binomial")
+tidy(essentialshop_by_gender_fit, conf.int=TRUE, exponentiate = TRUE)
+```
+
 Conclusion
 
 Limitations
