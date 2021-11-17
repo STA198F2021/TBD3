@@ -87,6 +87,20 @@ number_of_hours_two <- tidy_data %>%
 ```
 
 ```{r data-analysis, fig.width = 9, fig.height= 2.5}
+tidy_data$Classification[is.na(tidy_data$Classification)== TRUE] <- "Urban"
+
+reasons <-c("Work", "Provide Care for Others", "Grocery Shopping", "Essential Shopping", "Exercise", "Walk Dog", "Other")
+freq_reasons <- c(sum(tidy_data$leavehomereason___1, na.rm = TRUE), sum(tidy_data$leavehomereason___2, na.rm = TRUE), sum(tidy_data$leavehomereason___3, na.rm = TRUE), sum(tidy_data$leavehomereason___4, na.rm = TRUE), sum(tidy_data$leavehomereason___5, na.rm = TRUE), sum(tidy_data$leavehomereason___6, na.rm = TRUE), sum(tidy_data$leavehomereason___7, na.rm = TRUE))
+reasons_for_leaving = data.frame(reasons, freq_reasons)
+
+print(reasons_for_leaving)
+
+
+pie_chart <- tidy_data %>%
+  group_by(race) %>%
+  count() %>%
+  ungroup() %>%
+  mutate(perc = n / sum(n))
 
 tidy_data$race[tidy_data$race == 0] <- "American Indian"
 tidy_data$race[tidy_data$race == 1] <- "Asian"
