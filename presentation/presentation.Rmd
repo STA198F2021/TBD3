@@ -408,23 +408,9 @@ df <- data.frame(yAxis = length(boxLabels):1,
 
 ---
 
-class: inverse, middle, center
 
-# A new section...
+## Conclusion
 
----
-
-## Images
-
-```{r castle, echo = FALSE, out.width = "40%", fig.align = "center", fig.cap = "Image credit: Danielle Navarro, Percolate."}
-include_graphics("img/watercolour_sys02_img32_percolate.jpg")
-```
-
-Or you can also include a full page image. See next slide.
-
----
-
-background-image: url(img/watercolour_sys02_img32_percolate.jpg)
 
 ---
 
