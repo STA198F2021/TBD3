@@ -68,7 +68,7 @@ number_of_hours_two <- tidy_data %>%
   
 tidy_data$Classification[is.na(tidy_data$Classification)== TRUE] <- "Urban"
 
-reasons <-c("Work", "Provide Care for Others", "Grocery Shopping", "Essential Shopping", "Exercise", "Walk Dog", "Other")
+reasons <-c("Work", "Care for Others", "Grocery Shopping", "Essential Shopping", "Exercise", "Walk Dog", "Other")
 freq_reasons <- c(sum(tidy_data$leavehomereason___1, na.rm = TRUE), sum(tidy_data$leavehomereason___2, na.rm = TRUE), sum(tidy_data$leavehomereason___3, na.rm = TRUE), sum(tidy_data$leavehomereason___4, na.rm = TRUE), sum(tidy_data$leavehomereason___5, na.rm = TRUE), sum(tidy_data$leavehomereason___6, na.rm = TRUE), sum(tidy_data$leavehomereason___7, na.rm = TRUE))
 reasons_for_leaving = data.frame(reasons, freq_reasons)
 
@@ -109,7 +109,7 @@ style_xaringan(
 ---
 
 ## Demographics
-.pull-left[
+
 ```{r boring-regression, echo = FALSE}
 # a boring regression
 ggplot(pie_chart, aes(x="", y=perc, fill=race)) +
@@ -122,12 +122,13 @@ ggplot(pie_chart, aes(x="", y=perc, fill=race)) +
   theme_void()
 
 ```
-]
-.pull-right[
+
+---
+## Demographics Summary
+
 ```{r penguins-table, echo = FALSE}
 kable(pie_chart, format = "html")
 ```
-]
 
 
 
@@ -147,7 +148,7 @@ ggplot(data=number_of_hours, aes(x=race, y=hours)) +
 ---
 
 ## Sample Population - Reasons 
-```{r bar-graph2, echo = FALSE}
+```{r bar-graph2, echo = FALSE,out.width="60%", fig.width=8}
 ggplot(data=reasons_for_leaving, aes(x=reasons, y=freq_reasons)) +
   geom_bar(stat="identity", fill = "#003087") +
   labs (
