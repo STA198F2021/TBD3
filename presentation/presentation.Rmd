@@ -1,7 +1,7 @@
 ---
 title: "Presentation title"
 subtitle: "Presentation subtitle (if any)"
-author: "Team name <br> Names of team members"
+author: "Tee Bee Dee 3 <br> Grace Lee, Ji Yun Hyo"
 institute: "Duke University"
 date: "`r Sys.Date()`"
 output:
@@ -91,18 +91,29 @@ class: inverse, middle, center
 
 ---
 
-## xaringan
-
-- The presentation is created using the `xaringan` package
-
-- Use `---` to separate slides and `--` for incremental builds
-
+## Introduction, Data, and Research Questions
 --
-
-- Like this
+- Resaerch Question: Is average number of hours spent at home different among different populations?
 
 ---
+## Dataset
+- Associations of Urbanicity and Sociodemographic Characteristics with Protective Health Behaviors and Reasons for Leaving the Home during COVID-19 (Harvard Dataverse)
 
+- Collected through online survey of U.S. adults between April and May of 2020
+
+- Participants approached through social media platform
+
+
+- Did not include essential service workers
+
+---
+## Demographics
+```{r penguins-table, echo = FALSE}
+kable(pie_chart, format = "html")
+```
+
+
+---
 ## Layouts
 
 You can use plain text
@@ -169,8 +180,7 @@ ggplot(data=reasons_for_leaving, aes(x=reasons, y=freq_reasons)) +
 ```
 ]
 ---
-
-## Plots
+## Confidence Intervals by Race and Income Level
 
 ```{r recode-species, echo = FALSE}
 # In this chunk I'm doing a bunch of analysis that I don't want to present 
@@ -200,39 +210,207 @@ tidy_data <- tidy_data %>%
 
 ```
 
----
-
-## Plot and text
 
 .pull-left[
-- Some text
-- goes here
-]
-.pull-right[
-```{r warning=FALSE, out.width="100%", fig.width=4, echo=FALSE}
-# see how I changed out.width and fig.width from defaults
-# to make the figure bigger
-ggplot(penguins, aes(x = bill_length_mm, y = species, color = species)) +
-  geom_boxplot() +
-  theme_minimal()
+
+```{r confidence_intervals, echo = FALSE,out.width="100%", fig.width=8 }
+dt <- tidy_data%>%
+  group_by(race)%>%
+  filter(race != "Hawaiian")%>%
+  summarise(
+    mean = mean(localsiphours),
+    lci = t.test(localsiphours, conf.level = 0.95)$conf.int[1],
+    uci = t.test(localsiphours, conf.level = 0.95)$conf.int[2])
+
+pl2 <- ggplot(data = dt)
+pl2 <- pl2 + geom_point(aes(x=race, y=mean), color= "blue")
+pl2 <- pl2 + geom_errorbar(aes(x=race, ymin=lci, ymax= uci), width = 0.4, color ="blue", size = 1)
+pl2 <- pl2 + geom_text(aes(x=race, y=lci, label = round(lci,1)), size= 2, vjust = 1)
+pl2 <- pl2 + geom_text(aes(x=race, y=uci, label = round(uci,1)), size= 2, vjust = -1)
+pl2 <- pl2 + theme_classic()
+pl2 <- pl2 + labs(title = "Mean Hours Spent at Home with 95% Confidence Intervals")
+pl2 <- pl2 + labs(x= "Race", y = "Mean Hours Spent Home")
+pl2
 ```
 ]
+.pull-right[
+```{r confidence_intervals_two, echo=FALSE, out.width="100%", fig.width=8}
+# 95% confidence interval by income level
+dt <- tidy_data%>%
+  group_by(hhincome)%>%
+  filter(is.na(hhincome) == FALSE)%>%
+  summarise(
+    mean = mean(localsiphours),
+    lci = t.test(localsiphours, conf.level = 0.95)$conf.int[1],
+    uci = t.test(localsiphours, conf.level = 0.95)$conf.int[2])
+
+pl2 <- ggplot(data = dt)
+pl2 <- pl2 + geom_point(aes(x=as.factor(hhincome), y=mean, fill = as.factor(hhincome)), color= "blue")
+pl2 <- pl2 + geom_errorbar(aes(x=hhincome, ymin=lci, ymax= uci), width = 0.4, color ="blue", size = 1)
+pl2 <- pl2 + geom_text(aes(x=hhincome, y=lci, label = round(lci,1)), size= 2, vjust = 1)
+pl2 <- pl2 + geom_text(aes(x=hhincome, y=uci, label = round(uci,1)), size= 2, vjust = -1)
+pl2 <- pl2 + theme_classic()
+pl2 <- pl2 + labs(title = "Mean Hours Spent at Home with 95% Confidence Intervals")
+pl2 <- pl2 + labs(x= "Income Level", y = "Mean Hours Spent Home", fill = "okay")
+pl2 <- pl2 + scale_fill_discrete(name = "Income Levels", labels = c("1 - less than $9,999", "2 - $10,000 to $19,999", "3 - $20,000 to $29,999","4 - $30,000 to $39,999", "5 - $40,000 to $49,999", "6 - $50,000 to $59,999","7 - $60,000 to $69,999", "8 - $70,000 to $79,999", "9 - $80,000 to $89,999","10 - $90,000 to $99,999", "11 - $100,000 to $150,000", "12 - over $150,000"))
+pl2
+```
+
+]
+
+---
+## Confidence Intervals by Education Level and Gender
+.pull-left[
+```{r by_edu, echo= FALSE, out.width="100%", fig.width=8}
+# 95% confidence interval by education
+tidy_data$educ[tidy_data$educ == 1] <- "No School"
+tidy_data$educ[tidy_data$educ == 2] <- "G1-8"
+tidy_data$educ[tidy_data$educ == 3] <- "G9-12"
+tidy_data$educ[tidy_data$educ == 4] <- "GED"
+tidy_data$educ[tidy_data$educ == 5] <- "Some College"
+tidy_data$educ[tidy_data$educ == 6] <- "4 Years College"
+tidy_data$educ[tidy_data$educ == 7] <- "Not Sure"
+tidy_data$educ[is.na(tidy_data$educ)] <- "Not Sure"
+
+dt <- tidy_data%>%
+  group_by(educ)%>%
+  filter(educ != "G9-12")%>%
+  summarise(
+    mean = mean(localsiphours),
+    lci = t.test(localsiphours, conf.level = 0.95)$conf.int[1],
+    uci = t.test(localsiphours, conf.level = 0.95)$conf.int[2])
+
+pl2 <- ggplot(data = dt)
+pl2 <- pl2 + geom_point(aes(x=educ, y=mean), color= "blue")
+pl2 <- pl2 + geom_errorbar(aes(x=educ, ymin=lci, ymax= uci), width = 0.4, color ="blue", size = 1)
+pl2 <- pl2 + geom_text(aes(x=educ, y=lci, label = round(lci,1)), size= 2, vjust = 1)
+pl2 <- pl2 + geom_text(aes(x=educ, y=uci, label = round(uci,1)), size= 2, vjust = -1)
+pl2 <- pl2 + theme_classic()
+pl2 <- pl2 + labs(title = "Mean Hours Spent at Home with 95% Confidence Intervals")
+pl2 <- pl2 + labs(x= "Education Level", y = "Mean Hours Spent Home")
+pl2
+```
+]
+.pull-right[
+```{r by_gender, echo= FALSE, out.width="100%", fig.width=8}
+
+# 95% confidence interval by gender
+tidy_data$sex[tidy_data$sex == 1] <- "Male"
+tidy_data$sex[tidy_data$sex == 2] <- "Female"
+dt <- tidy_data%>%
+  filter(is.na(sex) == FALSE) %>%
+  group_by(sex)%>%
+  summarise(
+    mean = mean(localsiphours),
+    lci = t.test(localsiphours, conf.level = 0.95)$conf.int[1],
+    uci = t.test(localsiphours, conf.level = 0.95)$conf.int[2])
+
+pl2 <- ggplot(data = dt)
+pl2 <- pl2 + geom_point(aes(x=as.factor(sex), y=mean), color= "blue")
+pl2 <- pl2 + geom_errorbar(aes(x=sex, ymin=lci, ymax= uci), width = 0.4, color ="blue", size = 1)
+pl2 <- pl2 + geom_text(aes(x=sex, y=lci, label = round(lci,1)), size= 2, vjust = 1)
+pl2 <- pl2 + geom_text(aes(x=sex, y=uci, label = round(uci,1)), size= 2, vjust = -1)
+pl2 <- pl2 + theme_classic()
+pl2 <- pl2 + labs(title = "Mean Hours Spent at Home with 95% Confidence Intervals")
+pl2 <- pl2 + labs(x= "Gender", y = "Mean Hours Spent Home")
+pl2
+```
+]
+---
+
+## Logistic Regressions
+
+```{r logistic_reg, echo = FALSE, results = FALSE}
+tidy_data$sex=as.factor(tidy_data$sex)
+tidy_data$leavehomereason___5=as.factor(tidy_data$leavehomereason___5)
+tidy_data$leavehomereason___3=as.factor(tidy_data$leavehomereason___3)
+tidy_data$leavehomereason___6=as.factor(tidy_data$leavehomereason___6)
+tidy_data$leavehomereason___4=as.factor(tidy_data$leavehomereason___4)
+tidy_data$leavehomereason___1=as.factor(tidy_data$leavehomereason___1)
+
+# exercise
+exercise_by_gender <- tidy_data
+exercise_by_gender$sex = relevel(exercise_by_gender$sex, ref = "Male")
+exercise_by_gender_fit <- logistic_reg() %>%
+  set_engine("glm") %>%
+  fit(leavehomereason___5 ~ sex, data = exercise_by_gender, family = "binomial")
+#tidy(exercise_by_gender_fit, conf.int=TRUE, exponentiate = TRUE)
+
+# dog walking
+dogwalking_by_gender <- tidy_data %>%
+  filter(is.na(leavehomereason___6) == FALSE)
+dogwalking_by_gender$sex = relevel(dogwalking_by_gender$sex, ref = "Male")
+dogwalking_by_gender_fit <- logistic_reg() %>%
+  set_engine("glm") %>%
+  fit(leavehomereason___6 ~ sex, data = dogwalking_by_gender, family = "binomial")
+#tidy(dogwalking_by_gender_fit, conf.int=TRUE, exponentiate = TRUE)
+
+# other essential shopping
+essentialshop_by_gender <- tidy_data %>%
+  filter(is.na(leavehomereason___4) == FALSE)
+essentialshop_by_gender$sex = relevel(essentialshop_by_gender$sex, ref = "Male")
+essentialshop_by_gender_fit <- logistic_reg() %>%
+  set_engine("glm") %>%
+  fit(leavehomereason___4 ~ sex, data = essentialshop_by_gender, family = "binomial")
+#tidy(essentialshop_by_gender_fit, conf.int=TRUE, exponentiate = TRUE)
+
+# working
+work_by_gender <- tidy_data %>%
+  filter(is.na(leavehomereason___1) == FALSE)
+work_by_gender$sex = relevel(work_by_gender$sex, ref = "Male")
+work_by_gender_fit <- logistic_reg() %>%
+  set_engine("glm") %>%
+  fit(leavehomereason___1 ~ sex, data = work_by_gender, family = "binomial")
+#tidy(work_by_gender_fit, conf.int=TRUE, exponentiate = TRUE)
+```
+
+```{r visualize_grocery_shopping_logistic_regression,echo = FALSE, warning = FALSE, echo = FALSE}
+# grocery shopping
+grocery_by_gender <- tidy_data %>%
+  filter(is.na(leavehomereason___3) == FALSE)
+grocery_by_gender$sex = relevel(grocery_by_gender$sex, ref = "Male")
+grocery_by_gender_fit <- logistic_reg() %>%
+  set_engine("glm") %>%
+  fit(leavehomereason___3 ~ sex, data = grocery_by_gender, family = "binomial")
+#tidy(grocery_by_gender_fit, conf.int=TRUE, exponentiate = TRUE)
+```
+
+
+```{r visualize_logistic_reg, warning = FALSE, echo = FALSE, out.width="70%", fig.width=6}
+# visualize
+boxLabels = c("Exercise", "Grocery Shopping", "Dog Walking", "Other Essential Shopping", "Working")
+
+df <- data.frame(yAxis = length(boxLabels):1, 
+                 boxOdds = c(0.8159074, 0.6022504, 1.0978744,0.6030671,	0.5122374), 
+                  boxCILow = c(0.6600054,	0.4347917, 0.9001398, 0.4942309, 0.4141801	), 
+                 boxCIHigh = c(1.006145, 0.8220798, 1.3404133, 0.7357744, 0.6337078)
+                 )
+
+(p <- ggplot(df, aes(x = boxOdds, y = boxLabels)) + 
+    geom_vline(aes(xintercept = 0), size = .25, linetype = "dashed") + 
+    geom_errorbarh(aes(xmax = boxCIHigh, xmin = boxCILow), size = .5, height = 
+                    .2, color = "gray50") +
+    geom_point(size = 3.5, color = "orange") +
+    
+    geom_vline(xintercept=c(1), linetype="dotted")+
+    scale_x_continuous(breaks = seq(0.1, 1.5, 0.1), labels = seq(0.1, 1.5, 0.1),
+                       limits = c(0.09,1.5)) +
+    theme_bw()+
+    theme(panel.grid.minor = element_blank()) +
+    ylab("") +
+    xlab("Odds ratio") +
+    annotate(geom = "text", y =1.1, x = 1.5, 
+                     label = "", size = 3.5, hjust = 0) + labs(subtitle = "Reference Group: Male with 95% Confidence Intervals") +
+    ggtitle("Reasons for Leaving the House")
+) 
+```
+
 
 ---
 
 class: inverse, middle, center
 
 # A new section...
-
----
-
-## Tables
-
-If you want to generate a table, make sure it is in the HTML format (instead of Markdown or other formats), e.g.,
-
-```{r penguins-table, echo = FALSE}
-kable(head(penguins), format = "html")
-```
 
 ---
 
