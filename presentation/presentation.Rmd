@@ -1,6 +1,6 @@
 ---
-title: "Presentation title"
-subtitle: "Presentation subtitle (if any)"
+title: "Who Stayed at Home?"
+subtitle: "An Analysis of Different Demographics and Average Number of Hours Spent at Home during COVID-19"
 author: "Tee Bee Dee 3 <br> Grace Lee, Ji Yun Hyo"
 institute: "Duke University"
 date: "`r Sys.Date()`"
@@ -86,9 +86,15 @@ style_xaringan(
 ```
 
 
-## Introduction, Data, and Research Questions
+---
 
-- Resaerch Question: Is average number of hours spent at home different among different populations?
+## Research Question
+
+### Is average number of hours spent at home different between different populations?
+
+- Stay-at-Home orders issued between March 1 to May 31, 2020
+
+- Reduced population movement and person-to-person contact
 
 ---
 ## Dataset
@@ -98,20 +104,12 @@ style_xaringan(
 
 - Participants approached through social media platform
 
-
 - Did not include essential service workers
 
 ---
+
 ## Demographics
-```{r penguins-table, echo = FALSE}
-kable(pie_chart, format = "html")
-```
-
-
----
-
-## Sample Population
-
+.pull-left[
 ```{r boring-regression, echo = FALSE}
 # a boring regression
 ggplot(pie_chart, aes(x="", y=perc, fill=race)) +
@@ -123,12 +121,19 @@ ggplot(pie_chart, aes(x="", y=perc, fill=race)) +
     ) +
   theme_void()
 
-
-
 ```
+]
+.pull-right[
+```{r penguins-table, echo = FALSE}
+kable(pie_chart, format = "html")
+```
+]
+
+
+
 ---
 
-## Sample Population
+## Sample Population - Hours Spent at Home
 ```{r bar-graph1, echo = FALSE}
 # bar graphs for race
 ggplot(data=number_of_hours, aes(x=race, y=hours)) +
@@ -140,12 +145,9 @@ ggplot(data=number_of_hours, aes(x=race, y=hours)) +
     ) 
 ```
 ---
-.pull-left[
-- Grace put some text here
-]
-.pull-right[
-## Sample Population
-```{r bar-graph2, echo = FALSE,  out.width="100%", fig.width=8}
+
+## Sample Population - Reasons 
+```{r bar-graph2, echo = FALSE}
 ggplot(data=reasons_for_leaving, aes(x=reasons, y=freq_reasons)) +
   geom_bar(stat="identity", fill = "#003087") +
   labs (
@@ -154,7 +156,7 @@ ggplot(data=reasons_for_leaving, aes(x=reasons, y=freq_reasons)) +
     title = "Reasons for Leaving the House",
     ) 
 ```
-]
+
 ---
 ## Confidence Intervals by Race and Income Level
 
@@ -387,6 +389,14 @@ df <- data.frame(yAxis = length(boxLabels):1,
 
 ## Conclusion
 
+- No significant differences in average number of hours spent at home between different races and income levels
 
+- Males and those with some college education spent significantly less hours in the home
 
+- Males left the home for the purposes of grocery shopping, other essential shopping, working, and exercising
 
+- Disproportionate representation of demographics in our population may have skew results
+
+- Results could have implications regarding how to improve stay-at-home policies in the future
+
+---
