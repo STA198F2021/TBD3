@@ -86,8 +86,6 @@ style_xaringan(
 ```
 
 
----
-
 ## Introduction, Data, and Research Questions
 
 - Resaerch Question: Is average number of hours spent at home different among different populations?
@@ -390,6 +388,5 @@ df <- data.frame(yAxis = length(boxLabels):1,
 ## Conclusion
 
 
----
 
 
